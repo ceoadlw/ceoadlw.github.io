@@ -150,14 +150,14 @@
             // Intersection Observer for lazy loading elements
             const lazyLoadImages = () => {
                 if ('IntersectionObserver' in window) {
-                    const imageElements = document.querySelectorAll('img[data-src]');
+                    const imageElements = document.querySelectorAll('img.profile-image');
                     
                     const imageObserver = new IntersectionObserver((entries, observer) => {
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
                                 const img = entry.target;
-                                img.src = img.dataset.src;
-                                img.classList.add('lazy-image');
+                                // Apply a subtle fade-in effect to the profile image
+                                img.style.animation = 'fadeInImg 0.8s ease-in';
                                 observer.unobserve(img);
                             }
                         });
@@ -165,11 +165,6 @@
                     
                     imageElements.forEach(img => {
                         imageObserver.observe(img);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Intersection Observer
-                    document.querySelectorAll('img[data-src]').forEach(img => {
-                        img.src = img.dataset.src;
                     });
                 }
             };
@@ -696,28 +691,30 @@
             line-height: 20px;
         }
 
+        /* Improved about image styling for your actual photo */
         .about-image {
             position: relative;
             max-width: 300px;
             margin: 0 auto;
+            overflow: hidden;
+            border-radius: 4px;
         }
-
-        .about-image img {
+        
+        .about-image img.profile-image {
             width: 100%;
             height: auto;
             display: block;
             border-radius: 4px;
-            filter: grayscale(100%) contrast(1);
-            mix-blend-mode: multiply;
             transition: all 0.3s ease;
             max-width: 100%;
-        }
-
-        .about-image:hover img {
-            filter: none;
+            filter: brightness(1);
             mix-blend-mode: normal;
         }
-
+        
+        .about-image:hover img.profile-image {
+            transform: scale(1.02);
+        }
+        
         .about-image::after {
             content: "";
             display: block;
@@ -726,15 +723,15 @@
             height: 100%;
             border-radius: 4px;
             border: 2px solid var(--accent);
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             z-index: -1;
             transition: all 0.3s ease;
         }
-
+        
         .about-image:hover::after {
-            top: 15px;
-            left: 15px;
+            top: 10px;
+            left: 10px;
         }
 
         .timeline {
@@ -1253,6 +1250,12 @@
                 margin: 50px auto 0;
             }
             
+            /* Enhanced responsiveness for profile image */
+            .about-image::after {
+                top: 10px;
+                left: 10px;
+            }
+            
             .section-title::after {
                 width: 100px;
             }
@@ -1354,8 +1357,13 @@
             }
             
             .about-image::after {
-                top: 10px;
-                left: 10px;
+                top: 8px;
+                left: 8px;
+            }
+            
+            /* Profile image improvements for very small screens */
+            .about-image img.profile-image {
+                border-radius: 4px;
             }
             
             .terminal-effect {
@@ -1900,8 +1908,8 @@
                     </div>
                     
                     <div class="about-image">
-                        <!-- Using data-src for lazy loading -->
-                        <img data-src="/api/placeholder/400/400" alt="Adrijeet Deb" />
+                        <!-- Using the actual profile image now -->
+                        <img src="profile_photo.jpg" alt="Adrijeet Deb" class="profile-image" />
                     </div>
                 </div>
             </div>
