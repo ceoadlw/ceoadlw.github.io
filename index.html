@@ -1,414 +1,4 @@
-<a href="#home" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-    
-    <!-- Improved Scripts with Performance Optimizations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // Document ready function
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize particles.js
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": {
-                        "value": 80,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": "#ff3366"
-                    },
-                    "shape": {
-                        "type": "circle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        },
-                        "polygon": {
-                            "nb_sides": 5
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.3,
-                        "random": false,
-                        "anim": {
-                            "enable": false,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 40,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#ff3366",
-                        "opacity": 0.2,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 2,
-                        "direction": "none",
-                        "random": false,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": false,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 0.8
-                            }
-                        },
-                        "bubble": {
-                            "distance": 400,
-                            "size": 40,
-                            "duration": 2,
-                            "opacity": 8,
-                            "speed": 3
-                        },
-                        "repulse": {
-                            "distance": 200,
-                            "duration": 0.4
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        },
-                        "remove": {
-                            "particles_nb": 2
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
-            
-            // Improved hamburger menu toggle with animation
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('nav ul');
-            const body = document.querySelector('body');
-            const menuOverlay = document.querySelector('.menu-overlay');
-            
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                
-                // Prevent background scrolling when menu is open
-                if (navMenu.classList.contains('active')) {
-                    body.style.overflow = 'hidden';
-                } else {
-                    body.style.overflow = 'auto';
-                }
-            });
-            
-            // Close mobile menu when clicking links or overlay
-            const closeMenu = () => {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                body.style.overflow = 'auto';
-            };
-            
-            document.querySelectorAll('nav ul li a').forEach(link => {
-                link.addEventListener('click', closeMenu);
-            });
-            
-            menuOverlay.addEventListener('click', closeMenu);
-            
-            // Intersection Observer for lazy loading elements
-            const lazyLoadImages = () => {
-                if ('IntersectionObserver' in window) {
-                    const imageElements = document.querySelectorAll('img.profile-image');
-                    
-                    const imageObserver = new IntersectionObserver((entries, observer) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target;
-                                // Apply a subtle fade-in effect to the profile image
-                                img.style.animation = 'fadeInImg 0.8s ease-in';
-                                observer.unobserve(img);
-                            }
-                        });
-                    });
-                    
-                    imageElements.forEach(img => {
-                        imageObserver.observe(img);
-                    });
-                }
-            };
-            
-            // More efficient animation on scroll using Intersection Observer
-            const animateElementsOnScroll = () => {
-                if ('IntersectionObserver' in window) {
-                    // For timeline items
-                    const timelineObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.timeline-item').forEach(item => {
-                        timelineObserver.observe(item);
-                    });
-                    
-                    // For project cards with staggered delay
-                    const projectObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 100);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.project-card').forEach(card => {
-                        projectObserver.observe(card);
-                    });
-                    
-                    // For skill items with staggered delay
-                    const skillObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 30);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.skill-item').forEach(item => {
-                        skillObserver.observe(item);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Intersection Observer
-                    const scrollHandler = () => {
-                        document.querySelectorAll('.timeline-item, .project-card, .skill-item').forEach(item => {
-                            const itemTop = item.getBoundingClientRect().top;
-                            if (itemTop < window.innerHeight - 100) {
-                                item.classList.add('visible');
-                            }
-                        });
-                    };
-                    
-                    window.addEventListener('scroll', scrollHandler);
-                    scrollHandler(); // Initial check
-                }
-            };
-            
-            // Handle back-to-top button visibility
-            const handleBackToTop = () => {
-                const backToTop = document.querySelector('.back-to-top');
-                const header = document.querySelector('header');
-                
-                const scrollHandler = () => {
-                    if (window.scrollY > 300) {
-                        backToTop.classList.add('visible');
-                        header.classList.add('scrolled');
-                    } else {
-                        backToTop.classList.remove('visible');
-                        header.classList.remove('scrolled');
-                    }
-                };
-                
-                window.addEventListener('scroll', scrollHandler);
-                scrollHandler(); // Initial check
-                
-                // Smooth scroll for back to top
-                backToTop.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            };
-            
-            // Optimize matrix rain effect for better performance
-            const optimizeMatrixRain = () => {
-                const canvas = document.getElementById('matrix-rain');
-                const ctx = canvas.getContext('2d');
-                
-                // Resize canvas
-                const resizeCanvas = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
-                
-                resizeCanvas();
-                
-                // Throttle resize event to improve performance
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(resizeCanvas, 100);
-                });
-                
-                // Reduce matrix rain density on mobile
-                const isMobile = window.innerWidth < 768;
-                const fontSize = isMobile ? 10 : 12;
-                const density = isMobile ? 2 : 1; // Skip columns on mobile
-                
-                const columns = Math.floor(canvas.width / fontSize / density);
-                
-                const drops = [];
-                for (let i = 0; i < columns; i++) {
-                    drops[i] = 1;
-                }
-                
-                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|;:,.<>?';
-                const charArray = characters.split('');
-                
-                function drawMatrix() {
-                    // Use a more efficient clearing method
-                    ctx.fillStyle = 'rgba(10, 25, 47, 0.05)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#ff3366';
-                    ctx.font = `${fontSize}px monospace`;
-                    
-                    for (let i = 0; i < drops.length; i++) {
-                        // Draw fewer drops on mobile
-                        if (isMobile && i % 2 !== 0) continue;
-                        
-                        const text = charArray[Math.floor(Math.random() * charArray.length)];
-                        ctx.fillText(text, i * fontSize * density, drops[i] * fontSize);
-                        
-                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
-                        }
-                        
-                        drops[i]++;
-                    }
-                }
-                
-                // Use requestAnimationFrame instead of setInterval for better performance
-                let matrixAnimationId;
-                
-                function animateMatrix() {
-                    drawMatrix();
-                    matrixAnimationId = requestAnimationFrame(animateMatrix);
-                }
-                
-                // Start animation
-                matrixAnimationId = requestAnimationFrame(animateMatrix);
-                
-                // Pause animation when tab is not visible to save resources
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        cancelAnimationFrame(matrixAnimationId);
-                    } else {
-                        matrixAnimationId = requestAnimationFrame(animateMatrix);
-                    }
-                });
-            };
-            
-            // Smooth scroll for navigation links
-            const smoothScrollInit = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        
-                        if (targetElement) {
-                            // Account for fixed header
-                            const headerHeight = document.querySelector('header').offsetHeight;
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                            
-                            window.scrollTo({
-                                top: targetPosition,
-                                behavior: 'smooth'
-                            });
-                        }
-                    });
-                });
-            };
-            
-            // Initialize all functions
-            lazyLoadImages();
-            animateElementsOnScroll();
-            handleBackToTop();
-            optimizeMatrixRain();
-            smoothScrollInit();
-            
-            // Add touch support detection
-            if ('ontouchstart' in window || navigator.maxTouchPoints) {
-                document.body.classList.add('touch-device');
-            }
-            
-            // Reduce animations on low-powered devices
-            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            if (reducedMotionQuery.matches) {
-                document.body.classList.add('reduced-motion');
-                
-                // Add minimal styling for reduced motion
-                const styleEl = document.createElement('style');
-                styleEl.textContent = `
-                    .reduced-motion .animate-in,
-                    .reduced-motion .project-card,
-                    .reduced-motion .timeline-item,
-                    .reduced-motion .skill-item {
-                        animation: none !important;
-                        opacity: 1 !important;
-                        transform: none !important;
-                        transition: none !important;
-                    }
-                    
-                    .reduced-motion .typing-effect {
-                        animation: none !important;
-                        border-right: none !important;
-                    }
-                    
-                    .reduced-motion .particles-js-canvas-el {
-                        opacity: 0.3 !important;
-                    }
-                    
-                    .reduced-motion #matrix-rain {
-                        display: none !important;
-                    }
-                `;
-                document.head.appendChild(styleEl);
-            }
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1029,6 +619,135 @@
             font-family: var(--font-code);
             font-size: 0.9rem;
             color: var(--text-primary);
+        }
+
+        /* Inventory Section Styles */
+        .inventory {
+            padding-bottom: 200px;
+        }
+
+        .inventory-category {
+            margin-bottom: 50px;
+        }
+
+        .inventory-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .inventory-category h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-secondary), transparent);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .inventory-item {
+            background-color: var(--secondary);
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .inventory-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .inventory-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--accent-gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+
+        .inventory-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .inventory-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .inventory-image {
+            width: 100%;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 3px;
+        }
+
+        .inventory-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .inventory-item:hover .inventory-image img {
+            transform: scale(1.05);
+        }
+
+        .inventory-name {
+            font-family: var(--font-code);
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .inventory-specs {
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Styles for Inventory */
+        @media screen and (max-width: 768px) {
+            .inventory-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .inventory-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .inventory-name {
+                font-size: 0.9rem;
+            }
+            
+            .inventory-specs {
+                font-size: 0.8rem;
+            }
         }
 
         .contact {
@@ -1828,6 +1547,7 @@
                     <li class="animate-in delay-2"><a href="#experience">Experience</a></li>
                     <li class="animate-in delay-3"><a href="#projects">Projects</a></li>
                     <li class="animate-in delay-4"><a href="#skills">Skills</a></li>
+                    <li class="animate-in delay-5"><a href="#inventory">Inventory</a></li>
                     <li class="animate-in delay-5"><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -2191,6 +1911,150 @@
             </div>
         </section>
         
+        <section id="inventory" class="inventory">
+            <div class="container">
+                <h2 class="section-title">Digital Inventory</h2>
+                
+                <div class="inventory-category">
+                    <h3>System Specifications</h3>
+                    <div class="inventory-grid">
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="NZXT H7 Flow" />
+                            </div>
+                            <span class="inventory-name">Case</span>
+                            <span class="inventory-specs">NZXT H7 Flow</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="AMD Ryzen 9800X3D" />
+                            </div>
+                            <span class="inventory-name">CPU</span>
+                            <span class="inventory-specs">AMD Ryzen 9800X3D</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Thermalright Phantom Spirit EVO 120" />
+                            </div>
+                            <span class="inventory-name">CPU Cooler</span>
+                            <span class="inventory-specs">Thermalright Phantom Spirit EVO 120</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Asus TUF 9070 XT OC Edition" />
+                            </div>
+                            <span class="inventory-name">GPU</span>
+                            <span class="inventory-specs">Asus TUF 9070 XT OC Edition</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="HyperX Stinger 2 Wireless" />
+                            </div>
+                            <span class="inventory-name">Headset</span>
+                            <span class="inventory-specs">HyperX Stinger 2 Wireless</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Keychron Q5 HE" />
+                            </div>
+                            <span class="inventory-name">Keyboard</span>
+                            <span class="inventory-specs">Keychron Q5 HE</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Asus ROG Strix XG27AQDMG" />
+                            </div>
+                            <span class="inventory-name">Monitor</span>
+                            <span class="inventory-specs">Asus ROG Strix XG27AQDMG</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="ASRock X870E Taichi Lite" />
+                            </div>
+                            <span class="inventory-name">Motherboard</span>
+                            <span class="inventory-specs">ASRock X870E Taichi Lite</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Logitech G502 X Lightspeed Plus" />
+                            </div>
+                            <span class="inventory-name">Mouse</span>
+                            <span class="inventory-specs">Logitech G502 X Lightspeed Plus</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Super Flower Leadex VII Gold 1300W" />
+                            </div>
+                            <span class="inventory-name">PSU</span>
+                            <span class="inventory-specs">Super Flower Leadex VII Gold 1300W</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Team Group T-Force Delta RGB DDR5" />
+                            </div>
+                            <span class="inventory-name">RAM</span>
+                            <span class="inventory-specs">Team Group T-Force Delta RGB DDR5 32GB</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="WD SN850X 4TB" />
+                            </div>
+                            <span class="inventory-name">SSD</span>
+                            <span class="inventory-specs">WD SN850X 4TB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="inventory-category">
+                    <h3>Additional Hardware</h3>
+                    <div class="inventory-grid">
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="GuliKit KK3 MAX" />
+                            </div>
+                            <span class="inventory-name">Controller</span>
+                            <span class="inventory-specs">GuliKit KK3 MAX</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Asus ROG Ally X" />
+                            </div>
+                            <span class="inventory-name">Handheld</span>
+                            <span class="inventory-specs">Asus ROG Ally X</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Asus ROG GL502VS-GZ360" />
+                            </div>
+                            <span class="inventory-name">Laptop</span>
+                            <span class="inventory-specs">Asus ROG GL502VS-GZ360</span>
+                        </div>
+                        
+                        <div class="inventory-item">
+                            <div class="inventory-image">
+                                <img src="/api/placeholder/250/200" alt="Meta Quest 3" />
+                            </div>
+                            <span class="inventory-name">VR Headset</span>
+                            <span class="inventory-specs">Meta Quest 3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <section id="contact" class="contact">
             <div class="container">
                 <h2 class="glitch-effect" data-text="Get In Touch">Get In Touch</h2>
@@ -2219,3 +2083,427 @@
     <a href="#home" class="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </a>
+    
+    <!-- Improved Scripts with Performance Optimizations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Document ready function
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ff3366"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.3,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ff3366",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.8
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+            // Improved hamburger menu toggle with animation
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('nav ul');
+            const body = document.querySelector('body');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                
+                // Prevent background scrolling when menu is open
+                if (navMenu.classList.contains('active')) {
+                    body.style.overflow = 'hidden';
+                } else {
+                    body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close mobile menu when clicking links or overlay
+            const closeMenu = () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                body.style.overflow = 'auto';
+            };
+            
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            menuOverlay.addEventListener('click', closeMenu);
+            
+            // Intersection Observer for lazy loading elements
+            const lazyLoadImages = () => {
+                if ('IntersectionObserver' in window) {
+                    const imageElements = document.querySelectorAll('img.profile-image');
+                    
+                    const imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                // Apply a subtle fade-in effect to the profile image
+                                img.style.animation = 'fadeInImg 0.8s ease-in';
+                                observer.unobserve(img);
+                            }
+                        });
+                    });
+                    
+                    imageElements.forEach(img => {
+                        imageObserver.observe(img);
+                    });
+                }
+            };
+            
+            // More efficient animation on scroll using Intersection Observer
+            const animateElementsOnScroll = () => {
+                if ('IntersectionObserver' in window) {
+                    // For timeline items
+                    const timelineObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.timeline-item').forEach(item => {
+                        timelineObserver.observe(item);
+                    });
+                    
+                    // For project cards with staggered delay
+                    const projectObserver = new IntersectionObserver((entries) => {
+                        entries.forEach((entry, index) => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    entry.target.classList.add('visible');
+                                }, index * 100);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.project-card').forEach(card => {
+                        projectObserver.observe(card);
+                    });
+                    
+                    // For skill items with staggered delay
+                    const skillObserver = new IntersectionObserver((entries) => {
+                        entries.forEach((entry, index) => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    entry.target.classList.add('visible');
+                                }, index * 30);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.skill-item').forEach(item => {
+                        skillObserver.observe(item);
+                    });
+                    
+                    // For inventory items with staggered delay
+                    const inventoryObserver = new IntersectionObserver((entries) => {
+                        entries.forEach((entry, index) => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    entry.target.classList.add('visible');
+                                }, index * 50);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.inventory-item').forEach(item => {
+                        inventoryObserver.observe(item);
+                    });
+                } else {
+                    // Fallback for browsers that don't support Intersection Observer
+                    const scrollHandler = () => {
+                        document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
+                            const itemTop = item.getBoundingClientRect().top;
+                            if (itemTop < window.innerHeight - 100) {
+                                item.classList.add('visible');
+                            }
+                        });
+                    };
+                    
+                    window.addEventListener('scroll', scrollHandler);
+                    scrollHandler(); // Initial check
+                }
+            };
+            
+            // Handle back-to-top button visibility
+            const handleBackToTop = () => {
+                const backToTop = document.querySelector('.back-to-top');
+                const header = document.querySelector('header');
+                
+                const scrollHandler = () => {
+                    if (window.scrollY > 300) {
+                        backToTop.classList.add('visible');
+                        header.classList.add('scrolled');
+                    } else {
+                        backToTop.classList.remove('visible');
+                        header.classList.remove('scrolled');
+                    }
+                };
+                
+                window.addEventListener('scroll', scrollHandler);
+                scrollHandler(); // Initial check
+                
+                // Smooth scroll for back to top
+                backToTop.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            };
+            
+            // Optimize matrix rain effect for better performance
+            const optimizeMatrixRain = () => {
+                const canvas = document.getElementById('matrix-rain');
+                const ctx = canvas.getContext('2d');
+                
+                // Resize canvas
+                const resizeCanvas = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                };
+                
+                resizeCanvas();
+                
+                // Throttle resize event to improve performance
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(resizeCanvas, 100);
+                });
+                
+                // Reduce matrix rain density on mobile
+                const isMobile = window.innerWidth < 768;
+                const fontSize = isMobile ? 10 : 12;
+                const density = isMobile ? 2 : 1; // Skip columns on mobile
+                
+                const columns = Math.floor(canvas.width / fontSize / density);
+                
+                const drops = [];
+                for (let i = 0; i < columns; i++) {
+                    drops[i] = 1;
+                }
+                
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|;:,.<>?';
+                const charArray = characters.split('');
+                
+                function drawMatrix() {
+                    // Use a more efficient clearing method
+                    ctx.fillStyle = 'rgba(10, 25, 47, 0.05)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.fillStyle = '#ff3366';
+                    ctx.font = `${fontSize}px monospace`;
+                    
+                    for (let i = 0; i < drops.length; i++) {
+                        // Draw fewer drops on mobile
+                        if (isMobile && i % 2 !== 0) continue;
+                        
+                        const text = charArray[Math.floor(Math.random() * charArray.length)];
+                        ctx.fillText(text, i * fontSize * density, drops[i] * fontSize);
+                        
+                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                            drops[i] = 0;
+                        }
+                        
+                        drops[i]++;
+                    }
+                }
+                
+                // Use requestAnimationFrame instead of setInterval for better performance
+                let matrixAnimationId;
+                
+                function animateMatrix() {
+                    drawMatrix();
+                    matrixAnimationId = requestAnimationFrame(animateMatrix);
+                }
+                
+                // Start animation
+                matrixAnimationId = requestAnimationFrame(animateMatrix);
+                
+                // Pause animation when tab is not visible to save resources
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        cancelAnimationFrame(matrixAnimationId);
+                    } else {
+                        matrixAnimationId = requestAnimationFrame(animateMatrix);
+                    }
+                });
+            };
+            
+            // Smooth scroll for navigation links
+            const smoothScrollInit = () => {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            // Account for fixed header
+                            const headerHeight = document.querySelector('header').offsetHeight;
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            };
+            
+            // Initialize all functions
+            lazyLoadImages();
+            animateElementsOnScroll();
+            handleBackToTop();
+            optimizeMatrixRain();
+            smoothScrollInit();
+            
+            // Add touch support detection
+            if ('ontouchstart' in window || navigator.maxTouchPoints) {
+                document.body.classList.add('touch-device');
+            }
+            
+            // Reduce animations on low-powered devices
+            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (reducedMotionQuery.matches) {
+                document.body.classList.add('reduced-motion');
+                
+                // Add minimal styling for reduced motion
+                const styleEl = document.createElement('style');
+                styleEl.textContent = `
+                    .reduced-motion .animate-in,
+                    .reduced-motion .project-card,
+                    .reduced-motion .timeline-item,
+                    .reduced-motion .skill-item,
+                    .reduced-motion .inventory-item {
+                        animation: none !important;
+                        opacity: 1 !important;
+                        transform: none !important;
+                        transition: none !important;
+                    }
+                    
+                    .reduced-motion .typing-effect {
+                        animation: none !important;
+                        border-right: none !important;
+                    }
+                    
+                    .reduced-motion .particles-js-canvas-el {
+                        opacity: 0.3 !important;
+                    }
+                    
+                    .reduced-motion #matrix-rain {
+                        display: none !important;
+                    }
+                `;
+                document.head.appendChild(styleEl);
+            }
+        });
+    </script>
+</body>
+</html>
