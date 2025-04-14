@@ -2270,7 +2270,7 @@
             hamburger.addEventListener('click', function() {
                 navMenu.classList.toggle('active');
                 hamburger.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
+                //menuOverlay.classList.toggle('active');
                 
                 // Prevent background scrolling when menu is open
                 if (navMenu.classList.contains('active')) {
@@ -2332,7 +2332,7 @@
             });
             
             // Handle menu overlay click
- //           menuOverlay.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
             
             // Intersection Observer for lazy loading elements
             const lazyLoadImages = () => {
