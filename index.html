@@ -2261,7 +2261,6 @@
                 "retina_detect": true
             });
             
-            // Improved hamburger menu toggle with animation
             const hamburger = document.querySelector('.hamburger');
             const navMenu = document.querySelector('nav ul');
             const body = document.querySelector('body');
@@ -2280,7 +2279,7 @@
                 }
             });
             
-            // Close mobile menu when clicking links or overlay
+            // Close menu function
             const closeMenu = () => {
                 navMenu.classList.remove('active');
                 hamburger.classList.remove('active');
@@ -2288,8 +2287,34 @@
                 body.style.overflow = 'auto';
             };
             
+            // Combined function for smooth scrolling and menu closing
+            const handleNavClick = (e) => {
+                e.preventDefault();
+                
+                const targetId = e.currentTarget.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // First close the menu
+                    closeMenu();
+                    
+                    // Small delay to ensure menu transition completes before scrolling
+                    setTimeout(() => {
+                        // Account for fixed header
+                        const headerHeight = document.querySelector('header').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 300); // Delay matches menu transition time
+                }
+            };
+            
+            // Apply the handler to all navigation links
             document.querySelectorAll('nav ul li a').forEach(link => {
-                link.addEventListener('click', closeMenu);
+                link.addEventListener('click', handleNavClick);
             });
             
             menuOverlay.addEventListener('click', closeMenu);
@@ -2500,8 +2525,10 @@
             };
             
             // Smooth scroll for navigation links
+             // Replace the smoothScrollInit function with this:
             const smoothScrollInit = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                // Only apply to non-nav links (nav links are already handled)
+                document.querySelectorAll('a[href^="#"]:not(nav ul li a)').forEach(anchor => {
                     anchor.addEventListener('click', function(e) {
                         e.preventDefault();
                         
@@ -2509,9 +2536,8 @@
                         const targetElement = document.querySelector(targetId);
                         
                         if (targetElement) {
-                            // Account for fixed header
                             const headerHeight = document.querySelector('header').offsetHeight;
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
                             
                             window.scrollTo({
                                 top: targetPosition,
