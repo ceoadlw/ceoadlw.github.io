@@ -1495,14 +1495,16 @@
             height: 100%;
             background-color: rgba(10, 15, 23, 0.7);
             backdrop-filter: blur(3px);
-            z-index: 990;
+            z-index: 990; /* This is correct */
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none; /* Add this line to make overlay not capture clicks by default */
         }
         
         .menu-overlay.active {
             display: block;
             opacity: 1;
+            pointer-events: auto; /* When active, capture clicks */
         }
         
         /* Lazy loading animation for images */
@@ -2276,7 +2278,8 @@
             const menuOverlay = document.querySelector('.menu-overlay');
             
             // Toggle hamburger menu
-            hamburger.addEventListener('click', function() {
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation(); // Stop event bubbling
                 navMenu.classList.toggle('active');
                 hamburger.classList.toggle('active');
                 menuOverlay.classList.toggle('active');
@@ -2288,7 +2291,7 @@
                     body.style.overflow = 'auto';
                 }
             });
-            
+                        
             // Close menu function - simple and reliable
             function closeMenu() {
                 navMenu.classList.remove('active');
@@ -2341,7 +2344,13 @@
             });
             
             // Handle menu overlay click
-            menuOverlay.addEventListener('click', closeMenu);
+            // Replace the current menuOverlay click listener with this version:
+            menuOverlay.addEventListener('click', function(e) {
+                // Don't close if the click was on the hamburger or navigation
+                if (!e.target.closest('.hamburger') && !e.target.closest('nav')) {
+                    closeMenu();
+                }
+            });
             
             // Intersection Observer for lazy loading elements
             const lazyLoadImages = () => {
