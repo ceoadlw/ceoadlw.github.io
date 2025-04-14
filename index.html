@@ -26,7 +26,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* Native smooth scroll */
         }
 
         body {
@@ -50,7 +50,7 @@
             margin: 0 auto;
             padding: 0 2rem;
             width: 100%;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent container overflow */
         }
 
         header {
@@ -61,6 +61,7 @@
             padding: 1.5rem 0;
             z-index: 100;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
             background-color: rgba(10, 15, 23, 0.85);
             border-bottom: 1px solid rgba(255, 51, 102, 0.1);
             transition: all 0.3s ease;
@@ -75,8 +76,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative; /* Add this for relative positioning */
-            width: 100%; /* Ensure full width */
+            width: 100%; /* Ensure container fills header */
+            max-width: 1200px; /* Align with main container */
+            margin: 0 auto; /* Center nav container */
+            padding: 0 2rem; /* Match container padding */
         }
 
         .logo {
@@ -84,8 +87,10 @@
             font-weight: 700;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
+            background-clip: text; /* Standard property */
             -webkit-text-fill-color: transparent;
             font-family: var(--font-code);
+            flex-shrink: 0; /* Prevent logo from shrinking */
         }
 
         .logo span {
@@ -126,24 +131,27 @@
             counter-reset: item;
         }
 
-        /* Improved hamburger menu styles */
         .hamburger {
-            display: none;
+            display: none; /* Hidden by default */
             cursor: pointer;
-            z-index: 999;
-            position: absolute; /* Change to absolute for better positioning */
-            right: 0; /* Position it on the right */
-            top: 50%; /* Center it vertically */
-            transform: translateY(-50%); /* Perfect vertical centering */
+            z-index: 1000; /* Ensure hamburger is above overlay */
+            padding: 5px; /* Add some clickable area */
+            margin-left: 1rem; /* Space from nav items if they were visible */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
         }
 
         .hamburger .line {
-            width: 25px;
+            width: 100%; /* Use full width of hamburger */
             height: 3px;
             background: var(--accent-gradient);
-            margin: 5px;
             border-radius: 3px;
             transition: all 0.3s ease;
+            margin: 0; /* Remove default margins if any */
         }
 
         section {
@@ -151,7 +159,13 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            /* Ensure sections below fixed header are targetable */
+            scroll-margin-top: 80px; /* Adjust based on header height */
         }
+        #home {
+             scroll-margin-top: 0; /* Home doesn't need offset */
+        }
+
 
         .hero {
             height: 100vh;
@@ -159,1439 +173,181 @@
             flex-direction: column;
             justify-content: center;
             padding-top: 0;
+            min-height: auto; /* Override default min-height for hero */
         }
 
-        .hero-content {
-            max-width: 800px;
-            animation: fadeIn 1s ease forwards;
-        }
+        /* ... (rest of your CSS up to .menu-overlay) ... */
 
-        .hero .subtitle {
-            font-family: var(--font-code);
-            color: var(--accent);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-        }
-
-        .hero h2 {
-            font-size: 3rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 540px;
-            margin-bottom: 2rem;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .btn {
-            display: inline-block;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            padding: 1.25rem 1.75rem;
-            font-size: 0.9rem;
-            font-family: var(--font-code);
-            line-height: 1;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-            margin-top: 2rem;
-        }
-
-        .btn:hover {
-            background-color: rgba(255, 51, 102, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            position: relative;
-            width: 100%;
-        }
-
-        .section-title::before {
-            counter-increment: section;
-            content: "0" counter(section) ".";
-            margin-right: 10px;
-            font-family: var(--font-code);
-            color: var(--accent);
-            font-size: 1.5rem;
-            font-weight: 400;
-        }
-
-        .section-title::after {
-            content: "";
-            display: block;
-            position: relative;
-            width: 300px;
-            height: 1px;
-            margin-left: 20px;
-            background-color: var(--text-secondary);
-            opacity: 0.5;
-        }
-
-        body {
-            counter-reset: section;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 3fr 2fr;
-            gap: 50px;
-        }
-
-        .about-text p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .about-text ul {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(140px, 200px));
-            gap: 0px 10px;
-            padding: 0;
-            margin: 20px 0 0 0;
-            overflow: hidden;
-            list-style: none;
-        }
-
-        .about-text ul li {
-            position: relative;
-            margin-bottom: 10px;
-            padding-left: 20px;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .about-text ul li::before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-size: 1rem;
-            line-height: 20px;
-        }
-
-        /* Improved about image styling for your actual photo */
-        .about-image {
-            position: relative;
-            max-width: 300px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-        
-        .about-image img.profile-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            max-width: 100%;
-            filter: brightness(1);
-            mix-blend-mode: normal;
-        }
-        
-        .about-image:hover img.profile-image {
-            transform: scale(1.02);
-        }
-        
-        .about-image::after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 4px;
-            border: 2px solid var(--accent);
-            top: 15px;
-            left: 15px;
-            z-index: -1;
-            transition: all 0.3s ease;
-        }
-        
-        .about-image:hover::after {
-            top: 10px;
-            left: 10px;
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background-color: var(--text-secondary);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -1px;
-            opacity: 0.3;
-        }
-        
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.4s ease;
-        }
-        
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-gradient);
-            border-radius: 50%;
-            top: 15px;
-            z-index: 1;
-        }
-        
-        .left {
-            left: 0;
-        }
-        
-        .right {
-            left: 50%;
-        }
-        
-        .left::after {
-            right: -10px;
-        }
-        
-        .right::after {
-            left: -10px;
-        }
-        
-        .timeline-content {
-            padding: 20px 25px;
-            background-color: var(--secondary);
-            border-radius: 6px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .timeline-content:hover {
-            transform: translateY(-5px);
-        }
-        
-        .timeline-date {
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-        
-        .timeline-title {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .timeline-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-        
-        .timeline-desc {
-            color: var(--text-secondary);
-        }
-        
-        .timeline-desc ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 10px;
-        }
-        
-        .timeline-desc ul li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .timeline-desc ul li::before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            position: relative;
-        }
-        
-        .project-card {
-            position: relative;
-            overflow: hidden;
-            background-color: var(--secondary);
-            border-radius: 4px;
-            transition: transform 0.3s ease;
-            height: 100%;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .project-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .project-card-inner {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            padding: 2rem 1.75rem;
-        }
-        
-        .project-top {
-            margin-bottom: 35px;
-        }
-        
-        .folder {
-            color: var(--accent);
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-        }
-        
-        .project-links {
-            display: flex;
-            align-items: center;
-            margin-top: -30px;
-            margin-left: auto;
-            color: var(--text-primary);
-        }
-        
-        .project-links a {
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            margin-left: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        .project-links a:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-        
-        .project-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .project-description {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        .project-tech-list {
-            display: flex;
-            flex-wrap: wrap;
-            list-style: none;
-            margin-top: 20px;
-            padding: 0;
-        }
-        
-        .project-tech-list li {
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-right: 15px;
-            margin-bottom: 5px;
-        }
-
-        .skills {
-            padding-bottom: 200px;
-        }
-        
-        .skills-container {
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-        
-        .skill-category {
-            margin-bottom: 30px;
-        }
-        
-        .skill-category h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-        
-        .skill-category h3::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-secondary), transparent);
-        }
-        
-        .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-        }
-        
-        .skill-item {
-            background-color: var(--secondary);
-            border-radius: 4px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        .skill-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .skill-item::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--accent-gradient);
-            transform: scaleY(0);
-            transform-origin: bottom;
-            transition: transform 0.3s ease;
-        }
-        
-        .skill-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .skill-item:hover::before {
-            transform: scaleY(1);
-        }
-        
-        .skill-icon {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-        
-        .skill-name {
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            color: var(--text-primary);
-        }
-
-        /* Inventory Section Styles */
-        .inventory {
-            padding-bottom: 200px;
-        }
-
-        .inventory-category {
-            margin-bottom: 50px;
-        }
-
-        .inventory-category h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-
-        .inventory-category h3::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent-secondary), transparent);
-        }
-
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        .inventory-item {
-            background-color: var(--secondary);
-            border-radius: 4px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .inventory-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .inventory-item::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--accent-gradient);
-            transform: scaleY(0);
-            transform-origin: bottom;
-            transition: transform 0.3s ease;
-        }
-
-        .inventory-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .inventory-item:hover::before {
-            transform: scaleY(1);
-        }
-
-        .inventory-image {
-            width: 100%;
-            margin-bottom: 15px;
-            overflow: hidden;
-            border-radius: 3px;
-        }
-
-        .inventory-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .inventory-item:hover .inventory-image img {
-            transform: scale(1.05);
-        }
-
-        .inventory-name {
-            font-family: var(--font-code);
-            font-size: 1.1rem;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-
-        .inventory-specs {
-            font-family: var(--font-main);
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Responsive Styles for Inventory */
-        @media screen and (max-width: 768px) {
-            .inventory-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .inventory-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-            
-            .inventory-name {
-                font-size: 0.9rem;
-            }
-            
-            .inventory-specs {
-                font-size: 0.8rem;
-            }
-        }
-
-        .contact {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 200px;
-        }
-        
-        .contact h2 {
-            display: block;
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        
-        .contact h2::before {
-            content: "06. What's Next?";
-            display: block;
-            font-family: var(--font-code);
-            font-size: 1rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-        
-        .contact p {
-            color: var(--text-secondary);
-            margin-bottom: 50px;
-        }
-        
-        .contact-btn {
-            display: inline-block;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            padding: 1.25rem 1.75rem;
-            font-size: 1rem;
-            font-family: var(--font-code);
-            line-height: 1;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-        }
-        
-        .contact-btn:hover {
-            background-color: rgba(255, 51, 102, 0.1);
-            transform: translateY(-3px);
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 0;
-            margin-top: 50px;
-        }
-        
-        .social-links li {
-            margin: 0 15px;
-        }
-        
-        .social-links a {
-            display: inline-block;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        footer {
-            padding: 20px 0;
-            text-align: center;
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        .back-to-top {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            color: var(--accent);
-            border-radius: 4px;
-            text-decoration: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            z-index: 99;
-            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-            border: 1px solid var(--accent);
-        }
-        
-        .back-to-top.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .back-to-top:hover {
-            background-color: rgba(255, 51, 102, 0.1);
-            transform: translateY(-3px);
-        }
-        
-        /* Responsive Styles */
-        @media screen and (max-width: 768px) {
-            .hamburger {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                width: 30px;
-                height: 25px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 0;
-                z-index: 1000;
-                position: absolute; /* Keep absolute positioning */
-                right: 20px; /* Fixed distance from right */
-                top: 50%; /* Still centered vertically */
-                transform: translateY(-50%); /* Keep vertical centering */
-            }
-            
-            .hamburger .line {
-                width: 30px;
-                height: 3px;
-                background: var(--accent-gradient);
-                border-radius: 10px;
-                transition: all 0.3s ease;
-                margin: 0;
-            }
-            
-            .hamburger.active .line:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-            
-            .hamburger.active .line:nth-child(2) {
-                opacity: 0;
-            }
-            
-            .hamburger.active .line:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-            
-            nav ul {
-                position: fixed;
-                right: -100%;
-                top: 0;
-                height: 100vh;
-                width: 75%;
-                max-width: 300px;
-                background-color: var(--secondary);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-                padding: 80px 0 50px;
-                box-shadow: -10px 0px 30px -15px rgba(2, 12, 27, 0.7);
-                z-index: 999;
-            }
-            
-            nav ul.active {
-                right: 0;
-            }
-            
-            nav ul li {
-                margin: 1.5rem 0;
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.3s ease;
-                transition-delay: 0.1s;
-            }
-            
-            nav ul.active li {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            
-            nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
-            nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
-            nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
-            nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
-            nav ul.active li:nth-child(5) { transition-delay: 0.5s; }
-            
-            nav ul li a {
-                display: inline-block;
-                font-size: 1rem;
-                padding: 10px;
-            }
-            
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .hero h2 {
-                font-size: 1.8rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .about-image {
-                width: 80%;
-                max-width: 250px;
-                margin: 50px auto 0;
-            }
-            
-            /* Enhanced responsiveness for profile image */
-            .about-image::after {
-                top: 10px;
-                left: 10px;
-            }
-            
-            .section-title::after {
-                width: 100px;
-            }
-            
-            .timeline::after {
-                left: 31px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item::after {
-                left: 21px;
-            }
-            
-            .left::after, .right::after {
-                left: 21px;
-            }
-            
-            .right {
-                left: 0;
-            }
-            
-            header.scrolled {
-                padding: 0.6rem 0;
-            }
-            
-            .nav-container {
-                padding: 0 1rem;
-            }
-            
-            #particles-js {
-                opacity: 0.5;
-            }
-            
-            .skill-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-            
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        @media screen and (max-width: 600px) {
-            .skill-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            /* Adjust hamburger position for smaller screens */
-            .hamburger {
-                right: 15px; /* Closer to edge on very small screens */
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.2rem;
-                line-height: 1.2;
-            }
-            
-            .hero h2 {
-                font-size: 1.4rem;
-                line-height: 1.3;
-            }
-            
-            .hero p {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-                max-width: 100%;
-                padding-right: 10px;
-            }
-
-            .hero-content {
-                width: 100%;
-                padding: 0 10px;
-            }
-            
-            .section-title {
-                font-size: 1.4rem;
-                margin-bottom: 2rem;
-            }
-            
-            .section-title::after {
-                width: 30px;
-            }
-            
-            .about-text ul {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-            
-            .about-image {
-                max-width: 200px;
-            }
-            
-            .about-image::after {
-                top: 8px;
-                left: 8px;
-            }
-            
-            /* Profile image improvements for very small screens */
-            .about-image img.profile-image {
-                border-radius: 4px;
-            }
-            
-            .terminal-effect {
-                padding: 15px;
-                margin: 25px 0;
-            }
-            
-            .typing-effect {
-                font-size: 0.9rem;
-                white-space: normal;
-                animation: none;
-                border-right: none;
-            }
-            
-            .projects-grid {
-                gap: 20px;
-            }
-            
-            .project-card-inner {
-                padding: 1.5rem 1.25rem;
-            }
-            
-            .project-title {
-                font-size: 1.25rem;
-            }
-            
-            .btn, .cyber-btn, .contact-btn {
-                padding: 1rem 1.5rem;
-                font-size: 0.85rem;
-            }
-            
-            section {
-                padding: 80px 0;
-                min-height: auto;
-            }
-            
-            .contact {
-                padding-bottom: 120px;
-            }
-            
-            .contact h2 {
-                font-size: 2.2rem;
-            }
-            
-            .social-links li {
-                margin: 0 10px;
-            }
-            
-            .matrix-bg {
-                opacity: 0.03;
-            }
-            
-            /* Further adjust hamburger position */
-            .hamburger {
-                right: 10px;
-                top: 50%;
-            }
-            
-            /* Ensure nav container has proper padding for small screens */
-            .nav-container {
-                padding: 0 15px;
-            }
-        }
-
-        @media screen and (max-width: 400px) {
-            .skill-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            nav ul {
-                width: 85%;
-            }
-            
-            .logo {
-                font-size: 1.3rem;
-            }
-            
-            .nav-container {
-                padding: 0 10px;
-            }
-            
-            /* Make hamburger slightly smaller on very small screens */
-            .hamburger {
-                width: 25px;
-                height: 20px;
-            }
-            
-            .hamburger .line {
-                width: 25px;
-                height: 2px;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: fadeIn 0.6s ease forwards;
-            opacity: 0;
-        }
-
-        .delay-1 {
-            animation-delay: 0.1s;
-        }
-        
-        .delay-2 {
-            animation-delay: 0.2s;
-        }
-        
-        .delay-3 {
-            animation-delay: 0.3s;
-        }
-        
-        .delay-4 {
-            animation-delay: 0.4s;
-        }
-        
-        .delay-5 {
-            animation-delay: 0.5s;
-        }
-
-        /* Cybersecurity-themed terminal effect */
-        .terminal-effect {
-            position: relative;
-            padding: 20px;
-            background-color: rgba(16, 30, 54, 0.5);
-            border-radius: 4px;
-            font-family: var(--font-code);
-            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-            border: 1px solid rgba(100, 255, 218, 0.3);
-            overflow: hidden;
-            margin: 40px 0;
-        }
-        
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .terminal-circle {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .terminal-circle:nth-child(1) {
-            background-color: #ff5f56;
-        }
-        
-        .terminal-circle:nth-child(2) {
-            background-color: #ffbd2e;
-        }
-        
-        .terminal-circle:nth-child(3) {
-            background-color: #27c93f;
-        }
-        
-        .terminal-title {
-            margin-left: 10px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .typing-effect {
-            display: inline-block;
-            overflow: hidden;
-            border-right: 0.15em solid var(--accent);
-            white-space: nowrap;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-            margin: 0;
-            color: var(--accent);
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--accent) }
-        }
-        
-        .glitch-effect {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .glitch-effect::before,
-        .glitch-effect::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        
-        .glitch-effect::before {
-            color: #0ff;
-            z-index: -1;
-            animation: glitch-effect 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            animation-delay: 0.1s;
-        }
-        
-        .glitch-effect::after {
-            color: #f0f;
-            z-index: -2;
-            animation: glitch-effect 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            animation-delay: 0.2s;
-        }
-        
-        @keyframes glitch-effect {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-3px, 3px);
-            }
-            40% {
-                transform: translate(-3px, -3px);
-            }
-            60% {
-                transform: translate(3px, 3px);
-            }
-            80% {
-                transform: translate(3px, -3px);
-            }
-            100% {
-                transform: translate(0);
-            }
-        }
-        
-        .cyber-btn {
-            position: relative;
-            display: inline-flex;
-            padding: 10px 20px;
-            color: var(--accent);
-            background: transparent;
-            border: 1px solid var(--accent);
-            font-family: var(--font-code);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            overflow: hidden;
-            transition: 0.5s;
-            margin-top: 20px;
-            text-decoration: none;
-        }
-        
-        .cyber-btn:hover {
-            background: var(--accent-gradient);
-            color: var(--primary);
-            box-shadow: 0 0 5px var(--accent),
-                        0 0 25px var(--accent),
-                        0 0 50px var(--accent),
-                        0 0 200px var(--accent);
-        }
-        
-        .cyber-btn span {
-            position: absolute;
-            display: block;
-        }
-        
-        .cyber-btn span:nth-child(1) {
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-secondary));
-            animation: btn-anim1 1s linear infinite;
-        }
-        
-        @keyframes btn-anim1 {
-            0% {
-                left: -100%;
-            }
-            50%, 100% {
-                left: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(2) {
-            top: -100%;
-            right: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, var(--accent-secondary));
-            animation: btn-anim2 1s linear infinite;
-            animation-delay: 0.25s;
-        }
-        
-        @keyframes btn-anim2 {
-            0% {
-                top: -100%;
-            }
-            50%, 100% {
-                top: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(3) {
-            bottom: 0;
-            right: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(270deg, transparent, var(--accent-secondary));
-            animation: btn-anim3 1s linear infinite;
-            animation-delay: 0.5s;
-        }
-        
-        @keyframes btn-anim3 {
-            0% {
-                right: -100%;
-            }
-            50%, 100% {
-                right: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(4) {
-            bottom: -100%;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(360deg, transparent, var(--accent-secondary));
-            animation: btn-anim4 1s linear infinite;
-            animation-delay: 0.75s;
-        }
-        
-        @keyframes btn-anim4 {
-            0% {
-                bottom: -100%;
-            }
-            50%, 100% {
-                bottom: 100%;
-            }
-        }
-        
-        /* Matrix rain effect */
-        .matrix-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.05;
-            pointer-events: none;
-        }
-        
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: rgba(255, 51, 102, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-            padding: 5px 10px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            font-family: var(--font-code);
-            font-size: 0.8rem;
-            color: var(--accent);
-            transition: all 0.3s ease;
-        }
-        
-        .security-badge:hover {
-            background-color: rgba(255, 51, 102, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .security-badge i {
-            margin-right: 5px;
-        }
-        
         /* Menu overlay for mobile */
         .menu-overlay {
-            display: none;
+            display: block; /* Keep it in the layout */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(10, 15, 23, 0.7);
-            z-index: 998;
+            backdrop-filter: blur(5px); /* Slightly increased blur */
+            -webkit-backdrop-filter: blur(5px); /* Safari */
+            z-index: 998; /* Below menu (999) and hamburger (1000) */
             opacity: 0;
-            transition: opacity 0.3s ease;
+            visibility: hidden; /* Start hidden */
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Delay hiding */
         }
-        
+
         .menu-overlay.active {
-            display: block;
             opacity: 1;
+            visibility: visible; /* Become visible */
+            transition: opacity 0.3s ease, visibility 0s linear 0s; /* Show immediately */
         }
-        
-        /* Lazy loading animation for images */
-        @keyframes fadeInImg {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .lazy-image {
-            animation: fadeInImg 0.5s ease-in;
-        }
-        
-        /* Styles for touch devices */
-        .touch-device .project-card:hover,
-        .touch-device .skill-item:hover,
-        .touch-device .timeline-content:hover {
-            transform: none;
-        }
-        
-        .touch-device .skill-item:active,
-        .touch-device .project-card:active,
-        .touch-device .timeline-content:active {
-            transform: translateY(-5px);
-        }
-        
-        /* Reduced motion preferences */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
+
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem; /* Adjust padding for smaller screens */
             }
-            
-            .animate-in, .project-card, .timeline-item, .skill-item {
-                animation: none !important;
-                opacity: 1 !important;
-                transform: none !important;
-                transition: none !important;
+            .hamburger {
+                display: flex; /* Show hamburger */
             }
-            
-            .typing-effect {
-                animation: none !important;
-                border-right: none !important;
+
+            .hamburger.active .line:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
             }
-            
-            #particles-js canvas {
-                opacity: 0.3 !important;
+
+            .hamburger.active .line:nth-child(2) {
+                opacity: 0;
             }
-            
-            #matrix-rain {
-                display: none !important;
+
+            .hamburger.active .line:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
             }
+
+            nav ul {
+                position: fixed;
+                right: -100%; /* Start off-screen */
+                top: 0;
+                height: 100vh;
+                width: min(75%, 300px); /* Use min for responsive width */
+               /* max-width: 300px; remove this, handled by min() */
+                background-color: var(--secondary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+                padding: 80px 0 50px;
+                box-shadow: -10px 0px 30px -15px rgba(2, 12, 27, 0.7);
+                z-index: 999; /* Above overlay */
+                margin: 0; /* Reset margin */
+            }
+
+            nav ul.active {
+                right: 0; /* Slide in */
+            }
+
+            nav ul li {
+                margin: 1.5rem 0;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.3s ease, transform 0.3s ease; /* Separate transitions */
+                /* transition-delay will be handled by JS if needed, or use CSS nth-child */
+            }
+
+            nav ul.active li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Stagger animation with CSS */
+            nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
+            nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
+            nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
+            nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
+            nav ul.active li:nth-child(5) { transition-delay: 0.5s; }
+            nav ul.active li:nth-child(6) { transition-delay: 0.6s; } /* Added for inventory */
+            nav ul.active li:nth-child(7) { transition-delay: 0.7s; } /* Added for contact */
+
+
+            nav ul li a {
+                display: inline-block;
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+             section {
+                /* Adjust scroll margin for mobile header */
+                 scroll-margin-top: 60px; /* Smaller header height */
+             }
+             #home {
+                 scroll-margin-top: 0;
+             }
+
+
+            /* ... (rest of your responsive CSS) ... */
         }
+
+         @media screen and (max-width: 480px) {
+            .nav-container {
+                 padding: 0 10px; /* Further reduce padding */
+            }
+            /* ... other 480px styles ... */
+              section {
+                /* Adjust scroll margin for smallest header */
+                 scroll-margin-top: 50px; /* Potentially even smaller */
+             }
+             #home {
+                 scroll-margin-top: 0;
+             }
+         }
+
+         @media screen and (max-width: 400px) {
+             .nav-container {
+                 padding: 0 10px;
+             }
+             /* ... other 400px styles ... */
+         }
+
+         /* ... (rest of your CSS like animations, etc.) ... */
+
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-    
+
     <canvas id="matrix-rain" class="matrix-bg"></canvas>
-    
+
     <!-- Menu overlay for mobile -->
     <div class="menu-overlay"></div>
-    
+
     <header>
-        <div class="container nav-container">
+        <div class="container nav-container"> {/* Ensured container wraps nav content */}
             <div class="logo animate-in">
-                &lt;AD▲/&gt;
+                <AD▲/>
             </div>
-            
+
+            {/* Hamburger moved here, inside nav-container */}
             <div class="hamburger">
                 <div class="line"></div>
                 <div class="line"></div>
                 <div class="line"></div>
             </div>
-            
+
             <nav>
+                 {/* This UL is the one that slides */}
                 <ul>
                     <li class="animate-in delay-1"><a href="#about">About</a></li>
                     <li class="animate-in delay-2"><a href="#experience">Experience</a></li>
                     <li class="animate-in delay-3"><a href="#projects">Projects</a></li>
                     <li class="animate-in delay-4"><a href="#skills">Skills</a></li>
-                    <li class="animate-in delay-5"><a href="#inventory">Inventory</a></li>
-                    <li class="animate-in delay-5"><a href="#contact">Contact</a></li>
+                    <li class="animate-in delay-5"><a href="#inventory">Inventory</a></li> {/* Corrected numbering */}
+                    <li class="animate-in delay-6"><a href="#contact">Contact</a></li>   {/* Corrected numbering */}
                 </ul>
             </nav>
         </div>
     </header>
-    
+
     <main>
+        {/* Add id="home" to the hero section if you want a #home link */}
         <section id="home" class="hero">
             <div class="container">
                 <div class="hero-content">
@@ -1599,11 +355,11 @@
                     <h1 class="animate-in delay-1">Adrijeet Deb.</h1>
                     <h2 class="animate-in delay-2">I secure digital frontiers.</h2>
                     <p class="animate-in delay-3">
-                        I'm an information security specialist with expertise in blockchain, biometrics, and system security. 
-                        Currently pursuing a Master's in Information Systems Security at Concordia University, 
+                        I'm an information security specialist with expertise in blockchain, biometrics, and system security.
+                        Currently pursuing a Master's in Information Systems Security at Concordia University,
                         I build robust security solutions for the digital world.
                     </p>
-                    
+
                     <div class="terminal-effect animate-in delay-4">
                         <div class="terminal-header">
                             <div class="terminal-circle"></div>
@@ -1613,7 +369,7 @@
                         </div>
                         <p class="typing-effect">$ ./initialize_secure_connection.sh</p>
                     </div>
-                    
+
                     <a href="#projects" class="cyber-btn animate-in delay-5">
                         <span></span>
                         <span></span>
@@ -1624,510 +380,512 @@
                 </div>
             </div>
         </section>
-        
+
         <section id="about" class="about">
-            <div class="container">
-                <h2 class="section-title">About Me</h2>
-                
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>
-                            Hello! I'm Adrijeet, a cybersecurity enthusiast and professional passionate about creating secure systems that protect digital assets and information. My journey in information security began during my undergraduate studies at Vellore Institute of Technology, where I specialized in Information Security.
-                        </p>
-                        
-                        <p>
-                            Currently, I'm pursuing a Master's in Information Systems Security at Concordia University, deepening my knowledge in advanced security concepts and techniques. My research interests include blockchain technology, biometric authentication, and secure voting systems.
-                        </p>
-                        
-                        <p>
-                            Throughout my career, I've worked on innovative security solutions, from blockchain-based e-voting systems to keystroke dynamic authentication mechanisms. I believe in the power of technology to create more secure and trustworthy digital experiences.
-                        </p>
-                        
-                        <p>
-                            Here are a few technologies I've been working with recently:
-                        </p>
-                        
-                        <ul>
-                            <li>Blockchain (Solidity/Ganache)</li>
-                            <li>Biometric Authentication</li>
-                            <li>JavaScript (Node.js/React)</li>
-                            <li>Java & Python</li>
-                            <li>SQL (PostgreSQL)</li>
-                            <li>Cloud Security (AWS/Azure/GCP)</li>
-                        </ul>
-                        
-                        <div class="security-badges" style="margin-top: 20px;">
-                            <span class="security-badge"><i class="fas fa-shield-alt"></i> Information Security</span>
-                            <span class="security-badge"><i class="fas fa-lock"></i> Cybersecurity</span>
-                            <span class="security-badge"><i class="fas fa-fingerprint"></i> Biometrics</span>
-                            <span class="security-badge"><i class="fas fa-cubes"></i> Blockchain</span>
-                        </div>
-                    </div>
-                    
-                    <div class="about-image">
-                        <!-- Using the actual profile image now -->
-                        <img src="images/profile_photo.jpg" alt="Adrijeet Deb" class="profile-image" />
-                    </div>
-                </div>
-            </div>
-        </section>
-        
+             <div class="container">
+                 <h2 class="section-title">About Me</h2>
+
+                 <div class="about-content">
+                     <div class="about-text">
+                         <p>
+                             Hello! I'm Adrijeet, a cybersecurity enthusiast and professional passionate about creating secure systems that protect digital assets and information. My journey in information security began during my undergraduate studies at Vellore Institute of Technology, where I specialized in Information Security.
+                         </p>
+
+                         <p>
+                             Currently, I'm pursuing a Master's in Information Systems Security at Concordia University, deepening my knowledge in advanced security concepts and techniques. My research interests include blockchain technology, biometric authentication, and secure voting systems.
+                         </p>
+
+                         <p>
+                             Throughout my career, I've worked on innovative security solutions, from blockchain-based e-voting systems to keystroke dynamic authentication mechanisms. I believe in the power of technology to create more secure and trustworthy digital experiences.
+                         </p>
+
+                         <p>
+                             Here are a few technologies I've been working with recently:
+                         </p>
+
+                         <ul>
+                             <li>Blockchain (Solidity/Ganache)</li>
+                             <li>Biometric Authentication</li>
+                             <li>JavaScript (Node.js/React)</li>
+                             <li>Java & Python</li>
+                             <li>SQL (PostgreSQL)</li>
+                             <li>Cloud Security (AWS/Azure/GCP)</li>
+                         </ul>
+
+                         <div class="security-badges" style="margin-top: 20px;">
+                             <span class="security-badge"><i class="fas fa-shield-alt"></i> Information Security</span>
+                             <span class="security-badge"><i class="fas fa-lock"></i> Cybersecurity</span>
+                             <span class="security-badge"><i class="fas fa-fingerprint"></i> Biometrics</span>
+                             <span class="security-badge"><i class="fas fa-cubes"></i> Blockchain</span>
+                         </div>
+                     </div>
+
+                     <div class="about-image">
+                         {/* Using the actual profile image now */}
+                         <img src="images/profile_photo.jpg" alt="Adrijeet Deb" class="profile-image lazy-image" loading="lazy" /> {/* Added lazy loading */}
+                     </div>
+                 </div>
+             </div>
+         </section>
+
         <section id="experience" class="experience">
             <div class="container">
                 <h2 class="section-title">Where I've Worked</h2>
-                
+
                 <div class="timeline">
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <div class="timeline-date">September 2021 - April 2022</div>
-                            <h3 class="timeline-title">Project Engineer</h3>
-                            <h4 class="timeline-subtitle">Robi Axiata Ltd.</h4>
-                            <div class="timeline-desc">
-                                <ul>
-                                    <li>Developed an updated iteration of Minimum Baseline Security System with Huawei Bangladesh</li>
-                                    <li>Developed automation scripts as part of the OSS team to automate tasks and implement the new system</li>
-                                    <li>Prepared guidelines to allow seamless deployment of the new system nationwide</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item right">
-                        <div class="timeline-content">
-                            <div class="timeline-date">May 2019 - June 2019</div>
-                            <h3 class="timeline-title">Summer Intern</h3>
-                            <h4 class="timeline-subtitle">New Technologies Systems Ltd.</h4>
-                            <div class="timeline-desc">
-                                <ul>
-                                    <li>Developed new applications using ORACLE ERP (Forms builder and Supply Chain Management module)</li>
-                                    <li>Participated in software development for a hospital to provide digitized prescriptions to their patients</li>
-                                    <li>Led a team to design a network topology for handling the client's servers that ensures maximum efficiency</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item left">
-                        <div class="timeline-content">
-                            <div class="timeline-date">August 2020 - December 2022</div>
-                            <h3 class="timeline-title">Volunteer Teacher</h3>
-                            <h4 class="timeline-subtitle">Charulata School</h4>
-                            <div class="timeline-desc">
-                                <ul>
-                                    <li>Engaged as a dedicated volunteer ICT teacher at a school in Bangladesh, imparting essential digital skills and knowledge to students</li>
-                                    <li>Hosted workshops to raise awareness about phishing and social engineering attacks</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Timeline items ... */}
+                     <div class="timeline-item left">
+                         <div class="timeline-content">
+                             <div class="timeline-date">September 2021 - April 2022</div>
+                             <h3 class="timeline-title">Project Engineer</h3>
+                             <h4 class="timeline-subtitle">Robi Axiata Ltd.</h4>
+                             <div class="timeline-desc">
+                                 <ul>
+                                     <li>Developed an updated iteration of Minimum Baseline Security System with Huawei Bangladesh</li>
+                                     <li>Developed automation scripts as part of the OSS team to automate tasks and implement the new system</li>
+                                     <li>Prepared guidelines to allow seamless deployment of the new system nationwide</li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="timeline-item right">
+                         <div class="timeline-content">
+                             <div class="timeline-date">May 2019 - June 2019</div>
+                             <h3 class="timeline-title">Summer Intern</h3>
+                             <h4 class="timeline-subtitle">New Technologies Systems Ltd.</h4>
+                             <div class="timeline-desc">
+                                 <ul>
+                                     <li>Developed new applications using ORACLE ERP (Forms builder and Supply Chain Management module)</li>
+                                     <li>Participated in software development for a hospital to provide digitized prescriptions to their patients</li>
+                                     <li>Led a team to design a network topology for handling the client's servers that ensures maximum efficiency</li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="timeline-item left">
+                         <div class="timeline-content">
+                             <div class="timeline-date">August 2020 - December 2022</div>
+                             <h3 class="timeline-title">Volunteer Teacher</h3>
+                             <h4 class="timeline-subtitle">Charulata School</h4>
+                             <div class="timeline-desc">
+                                 <ul>
+                                     <li>Engaged as a dedicated volunteer ICT teacher at a school in Bangladesh, imparting essential digital skills and knowledge to students</li>
+                                     <li>Hosted workshops to raise awareness about phishing and social engineering attacks</li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Things I've Built</h2>
-                
+
                 <div class="projects-grid">
+                    {/* Project cards ... */}
                     <div class="project-card">
-                        <div class="project-card-inner">
-                            <div>
-                                <div class="project-top">
-                                    <div class="folder">
-                                        <i class="fas fa-folder"></i>
-                                    </div>
-                                    <div class="project-links">
-                                        <a href="https://github.com/ceoadlw/biometric-based-voting" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
-                                    </div>
-                                </div>
-                                
-                                <h3 class="project-title">Decentralized E-Voting System</h3>
-                                <p class="project-description">
-                                    A novel e-voting method utilizing smart cards, blockchain and biometrics. Published in a journal, this project ensures hardware security, biometric encryption, and transparent, anonymous voting.
-                                </p>
-                            </div>
-                            
-                            <ul class="project-tech-list">
-                                <li>HTML/CSS/JS</li>
-                                <li>PostgreSQL</li>
-                                <li>PHP</li>
-                                <li>Solidity</li>
-                                <li>Ganache</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card">
-                        <div class="project-card-inner">
-                            <div>
-                                <div class="project-top">
-                                    <div class="folder">
-                                        <i class="fas fa-folder"></i>
-                                    </div>
-                                    <div class="project-links">
-                                        <a href="https://github.com/ceoadlw/KeystrokeDynamics-Authentication" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
-                                    </div>
-                                </div>
-                                
-                                <h3 class="project-title">Authentication Using Keystroke Dynamics</h3>
-                                <p class="project-description">
-                                    An advanced authentication system that captures and analyzes keystroke timing patterns. Features multiple detection algorithms for enhanced security verification.
-                                </p>
-                            </div>
-                            
-                            <ul class="project-tech-list">
-                                <li>Node.js</li>
-                                <li>HTML/CSS</li>
-                                <li>MongoDB</li>
-                                <li>JavaScript</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card">
-                        <div class="project-card-inner">
-                            <div>
-                                <div class="project-top">
-                                    <div class="folder">
-                                        <i class="fas fa-folder"></i>
-                                    </div>
-                                </div>
-                                
-                                <h3 class="project-title">Minimum Baseline Security System</h3>
-                                <p class="project-description">
-                                    Worked with Huawei Bangladesh to develop an updated iteration of a security system with automation scripts and nationwide deployment guidelines for Robi Axiata Ltd.
-                                </p>
-                            </div>
-                            
-                            <ul class="project-tech-list">
-                                <li>Python</li>
-                                <li>Bash</li>
-                                <li>Network Security</li>
-                            </ul>
-                        </div>
-                    </div>
+                         <div class="project-card-inner">
+                             <div>
+                                 <div class="project-top">
+                                     <div class="folder">
+                                         <i class="fas fa-folder"></i>
+                                     </div>
+                                     <div class="project-links">
+                                         <a href="https://github.com/ceoadlw/biometric-based-voting" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
+                                     </div>
+                                 </div>
+
+                                 <h3 class="project-title">Decentralized E-Voting System</h3>
+                                 <p class="project-description">
+                                     A novel e-voting method utilizing smart cards, blockchain and biometrics. Published in a journal, this project ensures hardware security, biometric encryption, and transparent, anonymous voting.
+                                 </p>
+                             </div>
+
+                             <ul class="project-tech-list">
+                                 <li>HTML/CSS/JS</li>
+                                 <li>PostgreSQL</li>
+                                 <li>PHP</li>
+                                 <li>Solidity</li>
+                                 <li>Ganache</li>
+                             </ul>
+                         </div>
+                     </div>
+
+                     <div class="project-card">
+                         <div class="project-card-inner">
+                             <div>
+                                 <div class="project-top">
+                                     <div class="folder">
+                                         <i class="fas fa-folder"></i>
+                                     </div>
+                                     <div class="project-links">
+                                         <a href="https://github.com/ceoadlw/KeystrokeDynamics-Authentication" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
+                                     </div>
+                                 </div>
+
+                                 <h3 class="project-title">Authentication Using Keystroke Dynamics</h3>
+                                 <p class="project-description">
+                                     An advanced authentication system that captures and analyzes keystroke timing patterns. Features multiple detection algorithms for enhanced security verification.
+                                 </p>
+                             </div>
+
+                             <ul class="project-tech-list">
+                                 <li>Node.js</li>
+                                 <li>HTML/CSS</li>
+                                 <li>MongoDB</li>
+                                 <li>JavaScript</li>
+                             </ul>
+                         </div>
+                     </div>
+
+                     <div class="project-card">
+                         <div class="project-card-inner">
+                             <div>
+                                 <div class="project-top">
+                                     <div class="folder">
+                                         <i class="fas fa-folder"></i>
+                                     </div>
+                                      {/* No link provided for this one */}
+                                 </div>
+
+                                 <h3 class="project-title">Minimum Baseline Security System</h3>
+                                 <p class="project-description">
+                                     Worked with Huawei Bangladesh to develop an updated iteration of a security system with automation scripts and nationwide deployment guidelines for Robi Axiata Ltd.
+                                 </p>
+                             </div>
+
+                             <ul class="project-tech-list">
+                                 <li>Python</li>
+                                 <li>Bash</li>
+                                 <li>Network Security</li>
+                             </ul>
+                         </div>
+                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="skills" class="skills">
             <div class="container">
                 <h2 class="section-title">My Toolkit</h2>
-                
+
                 <div class="skills-container">
+                    {/* Skill categories ... */}
                     <div class="skill-category">
-                        <h3>Programming Languages</h3>
-                        <div class="skill-grid">
-                            <div class="skill-item">
-                                <i class="fab fa-java skill-icon"></i>
-                                <span class="skill-name">Java</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-python skill-icon"></i>
-                                <span class="skill-name">Python</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-code skill-icon"></i>
-                                <span class="skill-name">C/C++</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-database skill-icon"></i>
-                                <span class="skill-name">SQL</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-js-square skill-icon"></i>
-                                <span class="skill-name">JavaScript</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-html5 skill-icon"></i>
-                                <span class="skill-name">HTML/CSS</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-chart-bar skill-icon"></i>
-                                <span class="skill-name">R</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h3>Frameworks & Libraries</h3>
-                        <div class="skill-grid">
-                            <div class="skill-item">
-                                <i class="fab fa-react skill-icon"></i>
-                                <span class="skill-name">React</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-node-js skill-icon"></i>
-                                <span class="skill-name">Node.js</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-vial skill-icon"></i>
-                                <span class="skill-name">JUnit</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-wordpress skill-icon"></i>
-                                <span class="skill-name">WordPress</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h3>Platforms & Tools</h3>
-                        <div class="skill-grid">
-                            <div class="skill-item">
-                                <i class="fab fa-microsoft skill-icon"></i>
-                                <span class="skill-name">Office 365</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-google skill-icon"></i>
-                                <span class="skill-name">GCP</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-windows skill-icon"></i>
-                                <span class="skill-name">Azure</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-aws skill-icon"></i>
-                                <span class="skill-name">AWS</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-terminal skill-icon"></i>
-                                <span class="skill-name">Postman</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-gamepad skill-icon"></i>
-                                <span class="skill-name">Gamemaker</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <h3>Developer Tools</h3>
-                        <div class="skill-grid">
-                            <div class="skill-item">
-                                <i class="fab fa-git-alt skill-icon"></i>
-                                <span class="skill-name">Git</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fab fa-docker skill-icon"></i>
-                                <span class="skill-name">Docker</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-code skill-icon"></i>
-                                <span class="skill-name">VS Code</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-laptop-code skill-icon"></i>
-                                <span class="skill-name">Visual Studio</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-terminal skill-icon"></i>
-                                <span class="skill-name">PyCharm</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-coffee skill-icon"></i>
-                                <span class="skill-name">IntelliJ</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-moon skill-icon"></i>
-                                <span class="skill-name">Eclipse</span>
-                            </div>
-                            <div class="skill-item">
-                                <i class="fas fa-file-code skill-icon"></i>
-                                <span class="skill-name">LaTeX</span>
-                            </div>
-                        </div>
-                    </div>
+                         <h3>Programming Languages</h3>
+                         <div class="skill-grid">
+                             <div class="skill-item">
+                                 <i class="fab fa-java skill-icon"></i>
+                                 <span class="skill-name">Java</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-python skill-icon"></i>
+                                 <span class="skill-name">Python</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-code skill-icon"></i>
+                                 <span class="skill-name">C/C++</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-database skill-icon"></i>
+                                 <span class="skill-name">SQL</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-js-square skill-icon"></i>
+                                 <span class="skill-name">JavaScript</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-html5 skill-icon"></i>
+                                 <span class="skill-name">HTML/CSS</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-chart-bar skill-icon"></i>
+                                 <span class="skill-name">R</span>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="skill-category">
+                         <h3>Frameworks & Libraries</h3>
+                         <div class="skill-grid">
+                             <div class="skill-item">
+                                 <i class="fab fa-react skill-icon"></i>
+                                 <span class="skill-name">React</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-node-js skill-icon"></i>
+                                 <span class="skill-name">Node.js</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-vial skill-icon"></i>
+                                 <span class="skill-name">JUnit</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-wordpress skill-icon"></i>
+                                 <span class="skill-name">WordPress</span>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="skill-category">
+                         <h3>Platforms & Tools</h3>
+                         <div class="skill-grid">
+                             <div class="skill-item">
+                                 <i class="fab fa-microsoft skill-icon"></i>
+                                 <span class="skill-name">Office 365</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-google skill-icon"></i>
+                                 <span class="skill-name">GCP</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-windows skill-icon"></i>
+                                 <span class="skill-name">Azure</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-aws skill-icon"></i>
+                                 <span class="skill-name">AWS</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-terminal skill-icon"></i>
+                                 <span class="skill-name">Postman</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-gamepad skill-icon"></i>
+                                 <span class="skill-name">Gamemaker</span>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="skill-category">
+                         <h3>Developer Tools</h3>
+                         <div class="skill-grid">
+                             <div class="skill-item">
+                                 <i class="fab fa-git-alt skill-icon"></i>
+                                 <span class="skill-name">Git</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fab fa-docker skill-icon"></i>
+                                 <span class="skill-name">Docker</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-code skill-icon"></i>
+                                 <span class="skill-name">VS Code</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-laptop-code skill-icon"></i>
+                                 <span class="skill-name">Visual Studio</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-terminal skill-icon"></i>
+                                 <span class="skill-name">PyCharm</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-coffee skill-icon"></i>
+                                 <span class="skill-name">IntelliJ</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-moon skill-icon"></i>
+                                 <span class="skill-name">Eclipse</span>
+                             </div>
+                             <div class="skill-item">
+                                 <i class="fas fa-file-code skill-icon"></i>
+                                 <span class="skill-name">LaTeX</span>
+                             </div>
+                         </div>
+                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="inventory" class="inventory">
             <div class="container">
                 <h2 class="section-title">Digital Inventory</h2>
-                
                 <div class="inventory-category">
-                    <h3>System Specifications</h3>
-                    <div class="inventory-grid">
-                        <div class="inventory-item">
+                   <h3>System Specifications</h3>
+                   <div class="inventory-grid">
+                        {/* Inventory items ... */}
+                       <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/case.jpg" alt="NZXT H7 Flow" />
+                                <img src="images/case.jpg" alt="NZXT H7 Flow" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Case</span>
                             <span class="inventory-specs">NZXT H7 Flow</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/cpu.jpg" alt="AMD Ryzen 9800X3D" />
+                                <img src="images/cpu.jpg" alt="AMD Ryzen 9800X3D" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">CPU</span>
                             <span class="inventory-specs">AMD Ryzen 9800X3D</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/cooler.jpg" alt="Thermalright Phantom Spirit EVO 120" />
+                                <img src="images/cooler.jpg" alt="Thermalright Phantom Spirit EVO 120" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">CPU Cooler</span>
                             <span class="inventory-specs">Thermalright Phantom Spirit EVO 120</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/gpu.jpg" alt="Asus TUF 9070 XT OC Edition" />
+                                <img src="images/gpu.jpg" alt="Asus TUF 9070 XT OC Edition" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">GPU</span>
                             <span class="inventory-specs">Asus TUF 9070 XT OC Edition</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/headset.jpg" alt="HyperX Stinger 2 Wireless" />
+                                <img src="images/headset.jpg" alt="HyperX Stinger 2 Wireless" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Headset</span>
                             <span class="inventory-specs">HyperX Stinger 2 Wireless</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/keyboard.jpg" alt="Keychron Q5 HE" />
+                                <img src="images/keyboard.jpg" alt="Keychron Q5 HE" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Keyboard</span>
                             <span class="inventory-specs">Keychron Q5 HE</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/monitor.jpg" alt="Asus ROG Strix XG27AQDMG" />
+                                <img src="images/monitor.jpg" alt="Asus ROG Strix XG27AQDMG" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Monitor</span>
                             <span class="inventory-specs">Asus ROG Strix XG27AQDMG</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/motherboard.jpg" alt="ASRock X870E Taichi Lite" />
+                                <img src="images/motherboard.jpg" alt="ASRock X870E Taichi Lite" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Motherboard</span>
                             <span class="inventory-specs">ASRock X870E Taichi Lite</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/mouse.jpg" alt="Logitech G502 X Lightspeed Plus" />
+                                <img src="images/mouse.jpg" alt="Logitech G502 X Lightspeed Plus" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Mouse</span>
                             <span class="inventory-specs">Logitech G502 X Lightspeed Plus</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/psu.jpg" alt="Super Flower Leadex VII Gold 1300W" />
+                                <img src="images/psu.jpg" alt="Super Flower Leadex VII Gold 1300W" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">PSU</span>
                             <span class="inventory-specs">Super Flower Leadex VII Gold 1300W</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/ram.jpg" alt="Team Group T-Force Delta RGB DDR5" />
+                                <img src="images/ram.jpg" alt="Team Group T-Force Delta RGB DDR5" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">RAM</span>
                             <span class="inventory-specs">Team Group T-Force Delta RGB DDR5 32GB</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/ssd.jpg" alt="WD SN850X 4TB" />
+                                <img src="images/ssd.jpg" alt="WD SN850X 4TB" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">SSD</span>
                             <span class="inventory-specs">WD SN850X 4TB</span>
                         </div>
-                    </div>
+                   </div>
                 </div>
-                
-                <div class="inventory-category">
+                 <div class="inventory-category">
                     <h3>Additional Hardware</h3>
                     <div class="inventory-grid">
-                        <div class="inventory-item">
+                       <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/controller.jpg" alt="GuliKit KK3 MAX" />
+                                <img src="images/controller.jpg" alt="GuliKit KK3 MAX" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Controller</span>
                             <span class="inventory-specs">GuliKit KK3 MAX</span>
                         </div>
-                                                
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/shifter.jpg" alt="Logitech DE9 for G Series" />
+                                <img src="images/shifter.jpg" alt="Logitech DE9 for G Series" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Driving Force Shifter</span>
                             <span class="inventory-specs">DE9 for G Series</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/handheld.jpg" alt="Asus ROG Ally X" />
+                                <img src="images/handheld.jpg" alt="Asus ROG Ally X" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Handheld</span>
                             <span class="inventory-specs">Asus ROG Ally X</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/laptop.jpg" alt="Asus ROG GL502VS-GZ360" />
+                                <img src="images/laptop.jpg" alt="Asus ROG GL502VS-GZ360" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Laptop</span>
                             <span class="inventory-specs">Asus ROG GL502VS-GZ360</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/wheel.jpg" alt="Logitech G923" />
+                                <img src="images/wheel.jpg" alt="Logitech G923" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Racing Wheel and Pedals</span>
                             <span class="inventory-specs">Logitech G923</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/smartphone.jpg" alt="Samsung Galaxy S23 Ultra" />
+                                <img src="images/smartphone.jpg" alt="Samsung Galaxy S23 Ultra" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Smartphone</span>
                             <span class="inventory-specs">Samsung Galaxy S23 Ultra</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/tablet.jpg" alt="Samsung Galaxy Tab S9" />
+                                <img src="images/tablet.jpg" alt="Samsung Galaxy Tab S9" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">Tablet</span>
                             <span class="inventory-specs">Samsung Galaxy Tab S9</span>
                         </div>
-                        
+
                         <div class="inventory-item">
                             <div class="inventory-image">
-                                <img src="images/vr.jpg" alt="Meta Quest 3" />
+                                <img src="images/vr.jpg" alt="Meta Quest 3" class="lazy-image" loading="lazy"/>
                             </div>
                             <span class="inventory-name">VR Headset</span>
                             <span class="inventory-specs">Meta Quest 3</span>
                         </div>
-                        
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <section id="contact" class="contact">
             <div class="container">
                 <h2 class="glitch-effect" data-text="Get In Touch">Get In Touch</h2>
                 <p>
                     I'm currently looking for new opportunities in the field of information security. Whether you have a question or just want to say hi, I'll do my best to get back to you!
                 </p>
-                
+
                 <a href="mailto:adrijeet.deb@outlook.com" class="contact-btn">Say Hello</a>
-                
+
                 <ul class="social-links">
                     <li><a href="https://github.com/ceoadlw" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a></li>
                     <li><a href="https://linkedin.com/in/adrijeetdeb" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a></li>
@@ -2137,437 +895,305 @@
             </div>
         </section>
     </main>
-    
+
     <footer>
         <div class="container">
             <p>Designed & Built by Adrijeet Deb | 2025</p>
         </div>
     </footer>
-    
-    <a href="#home" class="back-to-top">
+
+    <a href="#home" class="back-to-top"> {/* Ensure this points to #home */}
         <i class="fas fa-arrow-up"></i>
     </a>
-    
-    <!-- Improved Scripts with Performance Optimizations -->
+
+    {/* Scripts */}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Document ready function
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize particles.js
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": {
-                        "value": 80,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": "#ff3366"
-                    },
-                    "shape": {
-                        "type": "circle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        },
-                        "polygon": {
-                            "nb_sides": 5
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.3,
-                        "random": false,
-                        "anim": {
-                            "enable": false,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 40,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#ff3366",
-                        "opacity": 0.2,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 2,
-                        "direction": "none",
-                        "random": false,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": false,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 0.8
-                            }
-                        },
-                        "bubble": {
-                            "distance": 400,
-                            "size": 40,
-                            "duration": 2,
-                            "opacity": 8,
-                            "speed": 3
-                        },
-                        "repulse": {
-                            "distance": 200,
-                            "duration": 0.4
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        },
-                        "remove": {
-                            "particles_nb": 2
-                        }
-                    }
-                },
-                "retina_detect": true
+            // Initialize particles.js (Your existing config)
+             particlesJS("particles-js", { /* ... your particles config ... */
+                "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ff3366" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } }, "opacity": { "value": 0.3, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ff3366", "opacity": 0.2, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.8 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true
             });
-            
-            // Improved hamburger menu toggle with animation
+
+            // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navMenu = document.querySelector('nav ul');
             const body = document.querySelector('body');
             const menuOverlay = document.querySelector('.menu-overlay');
-            
+            const navLinks = document.querySelectorAll('nav ul li a'); // Get nav links
+
+            const openMenu = () => {
+                hamburger.classList.add('active');
+                navMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                body.style.overflow = 'hidden'; // Prevent background scroll
+            };
+
+            const closeMenu = () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                body.style.overflow = ''; // Restore scroll
+            };
+
             hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                
-                // Prevent background scrolling when menu is open
                 if (navMenu.classList.contains('active')) {
-                    body.style.overflow = 'hidden';
+                    closeMenu();
                 } else {
-                    body.style.overflow = 'auto';
+                    openMenu();
                 }
             });
-            
-            // Close mobile menu when clicking links or overlay
-            const closeMenu = () => {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                body.style.overflow = 'auto';
-            };
-            
-            document.querySelectorAll('nav ul li a').forEach(link => {
+
+            // Close menu when a link is clicked
+            navLinks.forEach(link => {
                 link.addEventListener('click', closeMenu);
             });
-            
+
+            // Close menu when overlay is clicked
             menuOverlay.addEventListener('click', closeMenu);
-            
-            // Intersection Observer for lazy loading elements
-            const lazyLoadImages = () => {
-                if ('IntersectionObserver' in window) {
-                    const imageElements = document.querySelectorAll('img.profile-image');
-                    
-                    const imageObserver = new IntersectionObserver((entries, observer) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target;
-                                // Apply a subtle fade-in effect to the profile image
-                                img.style.animation = 'fadeInImg 0.8s ease-in';
-                                observer.unobserve(img);
-                            }
-                        });
-                    });
-                    
-                    imageElements.forEach(img => {
-                        imageObserver.observe(img);
-                    });
-                }
-            };
-            
-            // More efficient animation on scroll using Intersection Observer
-            const animateElementsOnScroll = () => {
-                if ('IntersectionObserver' in window) {
-                    // For timeline items
-                    const timelineObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.timeline-item').forEach(item => {
-                        timelineObserver.observe(item);
-                    });
-                    
-                    // For project cards with staggered delay
-                    const projectObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 100);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.project-card').forEach(card => {
-                        projectObserver.observe(card);
-                    });
-                    
-                    // For skill items with staggered delay
-                    const skillObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 30);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.skill-item').forEach(item => {
-                        skillObserver.observe(item);
-                    });
-                    
-                    // For inventory items with staggered delay
-                    const inventoryObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 50);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.inventory-item').forEach(item => {
-                        inventoryObserver.observe(item);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Intersection Observer
-                    const scrollHandler = () => {
-                        document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
-                            const itemTop = item.getBoundingClientRect().top;
-                            if (itemTop < window.innerHeight - 100) {
-                                item.classList.add('visible');
-                            }
-                        });
-                    };
-                    
-                    window.addEventListener('scroll', scrollHandler);
-                    scrollHandler(); // Initial check
-                }
-            };
-            
-            // Handle back-to-top button visibility
-            const handleBackToTop = () => {
+
+
+            // Intersection Observer for animations (Your existing setup)
+             const setupIntersectionObserver = () => {
+                 if ('IntersectionObserver' in window) {
+                    const observeTargets = (selector, className, threshold = 0.1, delayIncrement = 0) => {
+                         const observer = new IntersectionObserver((entries) => {
+                             entries.forEach((entry, index) => {
+                                 if (entry.isIntersecting) {
+                                     setTimeout(() => {
+                                         entry.target.classList.add(className);
+                                     }, index * delayIncrement);
+                                     observer.unobserve(entry.target); // Unobserve after animating
+                                 }
+                             });
+                         }, { threshold: threshold });
+
+                         document.querySelectorAll(selector).forEach(item => {
+                             observer.observe(item);
+                         });
+                     }
+
+                     // Add 'visible' class for general fade-in/slide-up
+                     observeTargets('.timeline-item', 'visible', 0.1);
+                     observeTargets('.project-card', 'visible', 0.1, 100); // Stagger projects
+                     observeTargets('.skill-item', 'visible', 0.1, 30);   // Stagger skills
+                     observeTargets('.inventory-item', 'visible', 0.1, 50); // Stagger inventory
+
+                     // Observe profile image for lazy animation
+                     const imageObserver = new IntersectionObserver((entries, observer) => {
+                         entries.forEach(entry => {
+                             if (entry.isIntersecting) {
+                                 const img = entry.target;
+                                 img.style.animation = 'fadeInImg 0.8s ease-in forwards'; // Add forwards
+                                 observer.unobserve(img);
+                             }
+                         });
+                     }, { threshold: 0.1 }); // Trigger slightly before fully visible
+
+                     document.querySelectorAll('img.profile-image').forEach(img => {
+                         imageObserver.observe(img);
+                     });
+
+                 } else {
+                     // Basic fallback for older browsers (immediately add class)
+                     document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
+                         item.classList.add('visible');
+                     });
+                     document.querySelectorAll('img.profile-image').forEach(img => {
+                         img.style.opacity = 1; // Just make visible
+                     });
+                 }
+             };
+
+
+            // Header scroll effect & Back-to-top button
+            const handleScrollEffects = () => {
                 const backToTop = document.querySelector('.back-to-top');
                 const header = document.querySelector('header');
-                
+                let lastScrollY = window.scrollY; // For potential header hide/show on scroll
+
                 const scrollHandler = () => {
-                    if (window.scrollY > 300) {
-                        backToTop.classList.add('visible');
+                    const currentScrollY = window.scrollY;
+                    // Header scrolled class
+                    if (currentScrollY > 50) { // Add scrolled class earlier
                         header.classList.add('scrolled');
                     } else {
-                        backToTop.classList.remove('visible');
                         header.classList.remove('scrolled');
                     }
+
+                    // Back-to-top visibility
+                    if (currentScrollY > 300) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+
+                    lastScrollY = currentScrollY; // Update last scroll position
                 };
-                
-                window.addEventListener('scroll', scrollHandler);
+
+                window.addEventListener('scroll', scrollHandler, { passive: true }); // Use passive listener
                 scrollHandler(); // Initial check
-                
-                // Smooth scroll for back to top
-                backToTop.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
+
+                 // Smooth scroll for back to top (using native behavior if possible)
+                 // The `scroll-behavior: smooth;` in CSS handles this for `a[href="#"]`
+                 // If more complex logic is needed, uncomment below:
+                 /*
+                 backToTop.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     window.scrollTo({
+                         top: 0,
+                         behavior: 'smooth'
+                     });
+                 });
+                 */
             };
-            
-            // Optimize matrix rain effect for better performance
+
+            // Matrix rain effect (Your existing setup - ensure it's optimized)
             const optimizeMatrixRain = () => {
                 const canvas = document.getElementById('matrix-rain');
+                 if (!canvas) return; // Exit if canvas not found
                 const ctx = canvas.getContext('2d');
-                
-                // Resize canvas
+                let animationFrameId;
+
                 const resizeCanvas = () => {
                     canvas.width = window.innerWidth;
                     canvas.height = window.innerHeight;
                 };
-                
-                resizeCanvas();
-                
-                // Throttle resize event to improve performance
+
+                resizeCanvas(); // Initial size
+
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(resizeCanvas, 100);
+                    resizeTimeout = setTimeout(() => {
+                        resizeCanvas();
+                        // Reset drops if needed after resize
+                        setupDrops(); // Re-initialize drops array
+                    }, 150); // Debounce resize event
                 });
-                
-                // Reduce matrix rain density on mobile
-                const isMobile = window.innerWidth < 768;
-                const fontSize = isMobile ? 10 : 12;
-                const density = isMobile ? 2 : 1; // Skip columns on mobile
-                
-                const columns = Math.floor(canvas.width / fontSize / density);
-                
-                const drops = [];
-                for (let i = 0; i < columns; i++) {
-                    drops[i] = 1;
-                }
-                
+
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|;:,.<>?';
                 const charArray = characters.split('');
-                
+                let fontSize, columns, drops;
+
+                const setupDrops = () => {
+                    const isMobile = window.innerWidth < 768;
+                    fontSize = isMobile ? 10 : 12;
+                    const density = isMobile ? 2 : 1;
+                    columns = Math.floor(canvas.width / (fontSize * density));
+                    drops = [];
+                    for (let i = 0; i < columns; i++) {
+                        drops[i] = Math.random() * canvas.height / fontSize; // Random start position
+                    }
+                }
+                setupDrops(); // Initial setup
+
                 function drawMatrix() {
-                    // Use a more efficient clearing method
-                    ctx.fillStyle = 'rgba(10, 25, 47, 0.05)';
+                    ctx.fillStyle = 'rgba(10, 25, 47, 0.05)'; // Trail effect
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#ff3366';
+
+                    ctx.fillStyle = '#ff3366'; // Matrix color
                     ctx.font = `${fontSize}px monospace`;
-                    
+
                     for (let i = 0; i < drops.length; i++) {
-                        // Draw fewer drops on mobile
-                        if (isMobile && i % 2 !== 0) continue;
-                        
                         const text = charArray[Math.floor(Math.random() * charArray.length)];
-                        ctx.fillText(text, i * fontSize * density, drops[i] * fontSize);
-                        
-                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        const xPos = i * fontSize * (window.innerWidth < 768 ? 2 : 1); // Adjust density dynamically
+                        const yPos = drops[i] * fontSize;
+                        ctx.fillText(text, xPos, yPos);
+
+                        // Reset drop randomly or if it goes off screen
+                        if (yPos > canvas.height && Math.random() > 0.975) {
                             drops[i] = 0;
                         }
-                        
                         drops[i]++;
                     }
                 }
-                
-                // Use requestAnimationFrame instead of setInterval for better performance
-                let matrixAnimationId;
-                
+
                 function animateMatrix() {
                     drawMatrix();
-                    matrixAnimationId = requestAnimationFrame(animateMatrix);
+                    animationFrameId = requestAnimationFrame(animateMatrix);
                 }
-                
-                // Start animation
-                matrixAnimationId = requestAnimationFrame(animateMatrix);
-                
-                // Pause animation when tab is not visible to save resources
+
+                // Start animation only if not preferring reduced motion
+                 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+                 if (!reducedMotionQuery.matches) {
+                     animateMatrix(); // Start the loop
+                 } else {
+                      canvas.style.display = 'none'; // Hide canvas if reduced motion
+                 }
+
+
+                // Pause/resume on visibility change
                 document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        cancelAnimationFrame(matrixAnimationId);
-                    } else {
-                        matrixAnimationId = requestAnimationFrame(animateMatrix);
+                    if (!reducedMotionQuery.matches) { // Only manage animation if it's running
+                        if (document.hidden) {
+                            cancelAnimationFrame(animationFrameId);
+                        } else {
+                            animateMatrix(); // Resume
+                        }
                     }
                 });
             };
-            
-            // Smooth scroll for navigation links
-            const smoothScrollInit = () => {
+
+            // Smooth scroll for internal links (using CSS scroll-margin-top)
+             const smoothScrollInit = () => {
+                // Add click listener mainly for closing menu (already done above)
+                // CSS `scroll-behavior: smooth` and `scroll-margin-top` handles the rest
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
+                    anchor.addEventListener('click', function (e) {
                         const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        
-                        if (targetElement) {
-                            // Account for fixed header
-                            const headerHeight = document.querySelector('header').offsetHeight;
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                            
-                            window.scrollTo({
-                                top: targetPosition,
-                                behavior: 'smooth'
-                            });
+                        // Check if it's a valid internal link
+                        if (targetId.length > 1 && targetId.startsWith('#')) {
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                // Let default behavior happen if CSS scroll-behavior is set
+                                // If manual scroll is needed (e.g., JS calculation) do it here:
+                                // e.preventDefault();
+                                // const headerOffset = document.querySelector('header').offsetHeight;
+                                // const elementPosition = targetElement.getBoundingClientRect().top;
+                                // const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                // window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+                                // Since closeMenu is already attached, we just let the browser handle scroll
+                            }
                         }
                     });
                 });
             };
-            
-            // Initialize all functions
-            lazyLoadImages();
-            animateElementsOnScroll();
-            handleBackToTop();
+
+
+            // Initialize all functionalities
+            setupIntersectionObserver();
+            handleScrollEffects();
             optimizeMatrixRain();
-            smoothScrollInit();
-            
-            // Add touch support detection
+            smoothScrollInit(); // Still useful for potential future JS scroll needs
+
+            // Add touch support class
             if ('ontouchstart' in window || navigator.maxTouchPoints) {
                 document.body.classList.add('touch-device');
             }
-            
-            // Reduce animations on low-powered devices
+
+            // Apply reduced motion class immediately if needed
             const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
             if (reducedMotionQuery.matches) {
                 document.body.classList.add('reduced-motion');
-                
-                // Add minimal styling for reduced motion
-                const styleEl = document.createElement('style');
-                styleEl.textContent = `
-                    .reduced-motion .animate-in,
-                    .reduced-motion .project-card,
-                    .reduced-motion .timeline-item,
-                    .reduced-motion .skill-item,
-                    .reduced-motion .inventory-item {
-                        animation: none !important;
-                        opacity: 1 !important;
-                        transform: none !important;
-                        transition: none !important;
-                    }
-                    
-                    .reduced-motion .typing-effect {
-                        animation: none !important;
-                        border-right: none !important;
-                    }
-                    
-                    .reduced-motion .particles-js-canvas-el {
-                        opacity: 0.3 !important;
-                    }
-                    
-                    .reduced-motion #matrix-rain {
-                        display: none !important;
-                    }
-                `;
-                document.head.appendChild(styleEl);
+                 // Optionally add styles via JS if needed, though CSS is preferred
+                 /*
+                 const styleEl = document.createElement('style');
+                 styleEl.textContent = `
+                     .reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
+                          animation-duration: 0.01ms !important;
+                          animation-iteration-count: 1 !important;
+                          transition-duration: 0.01ms !important;
+                          scroll-behavior: auto !important;
+                      }
+                      /* Add other reduced motion overrides */
+                 `;
+                 document.head.appendChild(styleEl);
+                 */
             }
         });
     </script>
+
 </body>
 </html>
