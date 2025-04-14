@@ -9,39 +9,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-                /* Cursor trail effect */
-        #cursor-trail {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        
-        .cursor-particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px 2px rgba(255, 51, 102, 0.6);
-            transition: opacity 1s ease;
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            .cursor-particle {
-                display: none;
-            }
-        }
-        
-        .touch-device .cursor-particle {
-            display: none;
-        }
         :root {
             --primary: #0a0f17;
             --secondary: #151b26;
@@ -63,7 +30,6 @@
         }
 
         body {
-            <div id="cursor-trail"></div>
             background: var(--gradient-bg);
             color: var(--text-primary);
             font-family: var(--font-main);
@@ -2293,75 +2259,6 @@
                     }
                 },
                 "retina_detect": true
-                                // Custom cursor trail effect
-                const initCursorTrail = () => {
-                    const cursorTrail = document.getElementById('cursor-trail');
-                    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
-                    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                    
-                    // Skip effect on touch devices or if reduced motion is preferred
-                    if (isTouchDevice || reducedMotion) return;
-                    
-                    const particles = [];
-                    const particleCount = 12;
-                    
-                    // Create particles
-                    for (let i = 0; i < particleCount; i++) {
-                        const particle = document.createElement('div');
-                        particle.className = 'cursor-particle';
-                        cursorTrail.appendChild(particle);
-                        particles.push({
-                            element: particle,
-                            x: 0,
-                            y: 0,
-                            delay: i * 2
-                        });
-                    }
-                    
-                    let mouseX = 0;
-                    let mouseY = 0;
-                    
-                    // Update mouse position
-                    document.addEventListener('mousemove', (e) => {
-                        mouseX = e.clientX;
-                        mouseY = e.clientY;
-                        
-                        // Show the first particle immediately
-                        if (particles[0]) {
-                            particles[0].element.style.opacity = '0.8';
-                            particles[0].x = mouseX;
-                            particles[0].y = mouseY;
-                        }
-                    });
-                    
-                    // Animation loop
-                    const animateParticles = () => {
-                        particles.forEach((particle, index) => {
-                            if (index === 0) return; // Skip the first particle
-                            
-                            // Follow the previous particle with delay
-                            const prevParticle = particles[index - 1];
-                            
-                            // Ease towards the previous particle
-                            const dx = prevParticle.x - particle.x;
-                            const dy = prevParticle.y - particle.y;
-                            
-                            particle.x += dx * 0.4;
-                            particle.y += dy * 0.4;
-                            
-                            // Apply position and fade based on distance
-                            particle.element.style.opacity = 0.8 - (index / particleCount * 0.8);
-                            particle.element.style.transform = `translate(${particle.x}px, ${particle.y}px) scale(${1 - (index / particleCount) * 0.5})`;
-                        });
-                        
-                        requestAnimationFrame(animateParticles);
-                    };
-                    
-                    animateParticles();
-                };
-                
-                // Initialize cursor trail
-                initCursorTrail();
             });
             
             // Improved hamburger menu toggle with animation
@@ -2631,7 +2528,6 @@
             handleBackToTop();
             optimizeMatrixRain();
             smoothScrollInit();
-            initCursorTrail(); // Add this line
             
             // Add touch support detection
             if ('ontouchstart' in window || navigator.maxTouchPoints) {
