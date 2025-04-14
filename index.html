@@ -75,6 +75,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative; /* Add this for relative positioning */
+            width: 100%; /* Ensure full width */
         }
 
         .logo {
@@ -124,10 +126,15 @@
             counter-reset: item;
         }
 
+        /* Improved hamburger menu styles */
         .hamburger {
             display: none;
             cursor: pointer;
             z-index: 999;
+            position: absolute; /* Change to absolute for better positioning */
+            right: 0; /* Position it on the right */
+            top: 50%; /* Center it vertically */
+            transform: translateY(-50%); /* Perfect vertical centering */
         }
 
         .hamburger .line {
@@ -878,6 +885,10 @@
                 cursor: pointer;
                 padding: 0;
                 z-index: 1000;
+                position: absolute; /* Keep absolute positioning */
+                right: 20px; /* Fixed distance from right */
+                top: 50%; /* Still centered vertically */
+                transform: translateY(-50%); /* Keep vertical centering */
             }
             
             .hamburger .line {
@@ -1029,6 +1040,11 @@
             .skill-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            /* Adjust hamburger position for smaller screens */
+            .hamburger {
+                right: 15px; /* Closer to edge on very small screens */
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -1134,6 +1150,17 @@
             .matrix-bg {
                 opacity: 0.03;
             }
+            
+            /* Further adjust hamburger position */
+            .hamburger {
+                right: 10px;
+                top: 50%;
+            }
+            
+            /* Ensure nav container has proper padding for small screens */
+            .nav-container {
+                padding: 0 15px;
+            }
         }
 
         @media screen and (max-width: 400px) {
@@ -1151,6 +1178,17 @@
             
             .nav-container {
                 padding: 0 10px;
+            }
+            
+            /* Make hamburger slightly smaller on very small screens */
+            .hamburger {
+                width: 25px;
+                height: 20px;
+            }
+            
+            .hamburger .line {
+                width: 25px;
+                height: 2px;
             }
         }
 
