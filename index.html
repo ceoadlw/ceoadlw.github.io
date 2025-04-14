@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Adrijeet Deb - Information Security Expert specializing in blockchain, biometrics, and system security">
     <title>Adrijeet Deb | Security Expert</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"> <!-- Make sure this path is correct -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,13 +20,19 @@
             --font-code: 'Roboto Mono', monospace;
             --gradient-bg: linear-gradient(135deg, #0a0f17 0%, #151b26 50%, #2d0a2e 100%);
             --accent-gradient: linear-gradient(90deg, #ff3366, #ff0055);
+            --header-height-desktop: 80px; /* Approximate */
+            --header-height-mobile: 60px; /* Approximate */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth; /* Native smooth scroll */
+        }
+
+        /* Apply smooth scroll to the html element */
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -36,6 +42,11 @@
             line-height: 1.6;
             overflow-x: hidden;
             max-width: 100%;
+        }
+
+        /* Lock body scroll when mobile menu is open */
+        body.menu-open {
+            overflow: hidden;
         }
 
         #particles-js {
@@ -64,12 +75,14 @@
             -webkit-backdrop-filter: blur(10px); /* Safari support */
             background-color: rgba(10, 15, 23, 0.85);
             border-bottom: 1px solid rgba(255, 51, 102, 0.1);
-            transition: all 0.3s ease;
+            transition: padding 0.3s ease, box-shadow 0.3s ease; /* Combined transition */
+            height: var(--header-height-desktop); /* Define initial height */
         }
 
         header.scrolled {
             padding: 0.8rem 0;
             box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+            height: calc(var(--header-height-desktop) - 18px); /* Adjust based on padding change */
         }
 
         .nav-container {
@@ -77,6 +90,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%; /* Ensure container fills header */
+            height: 100%; /* Occupy full header height */
             max-width: 1200px; /* Align with main container */
             margin: 0 auto; /* Center nav container */
             padding: 0 2rem; /* Match container padding */
@@ -91,15 +105,24 @@
             -webkit-text-fill-color: transparent;
             font-family: var(--font-code);
             flex-shrink: 0; /* Prevent logo from shrinking */
+            transition: font-size 0.3s ease; /* Smooth resize */
         }
 
-        .logo span {
+        .logo span { /* If you have spans inside logo */
             color: var(--text-primary);
+        }
+
+        nav {
+            height: 100%; /* Ensure nav takes full height for vertical alignment if needed */
         }
 
         nav ul {
             display: flex;
+            align-items: center; /* Vertically align items */
+            height: 100%; /* Take full height */
             list-style: none;
+            margin: 0; /* Reset margin */
+            padding: 0; /* Reset padding */
         }
 
         nav ul li {
@@ -113,6 +136,7 @@
             font-size: 0.9rem;
             transition: color 0.3s ease;
             position: relative;
+            padding: 5px 0; /* Add padding for better hover */
         }
 
         nav ul li a:hover {
@@ -135,12 +159,12 @@
             display: none; /* Hidden by default */
             cursor: pointer;
             z-index: 1000; /* Ensure hamburger is above overlay */
-            padding: 5px; /* Add some clickable area */
+            padding: 8px 5px; /* Add some clickable area */
             margin-left: 1rem; /* Space from nav items if they were visible */
             flex-direction: column;
             justify-content: space-around;
             width: 30px;
-            height: 25px;
+            height: 30px; /* Make it slightly taller */
             background: transparent;
             border: none;
         }
@@ -148,166 +172,1557 @@
         .hamburger .line {
             width: 100%; /* Use full width of hamburger */
             height: 3px;
-            background: var(--accent-gradient);
+            background: var(--accent-gradient); /* Use gradient */
             border-radius: 3px;
-            transition: all 0.3s ease;
-            margin: 0; /* Remove default margins if any */
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            transform-origin: center; /* Rotate around center */
         }
 
+        /* Hamburger active state animations */
+        .hamburger.active .line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0); /* Add scale for smoother disappearance */
+        }
+
+        .hamburger.active .line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+
+        /* Sections */
         section {
             padding: 100px 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
-            /* Ensure sections below fixed header are targetable */
-            scroll-margin-top: 80px; /* Adjust based on header height */
+            /* Offset for fixed header */
+            scroll-margin-top: var(--header-height-desktop);
         }
+
+        /* Remove offset for the very first section if it's the hero */
         #home {
-             scroll-margin-top: 0; /* Home doesn't need offset */
+             scroll-margin-top: 0;
+             min-height: 100vh; /* Ensure hero takes full viewport height */
+             padding-top: var(--header-height-desktop); /* Add padding to push content below header */
+             padding-bottom: 0; /* Adjust if needed */
+             display: flex;
+             align-items: center; /* Vertically center content */
+             justify-content: center; /* Horizontally center content */
         }
 
 
         .hero {
-            height: 100vh;
+            height: 100vh; /* Ensure full viewport height */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-top: 0;
+            padding-top: 0; /* Remove section padding */
+            padding-bottom: 0; /* Remove section padding */
             min-height: auto; /* Override default min-height for hero */
         }
 
-        /* ... (rest of your CSS up to .menu-overlay) ... */
+        .hero-content {
+            max-width: 800px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .hero .subtitle {
+            font-family: var(--font-code);
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin-bottom: 2rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .btn { /* Base button style */
+            display: inline-block;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.25rem 1.75rem;
+            font-size: 0.9rem;
+            font-family: var(--font-code);
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+            margin-top: 2rem;
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 51, 102, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+
+        .section-title::before {
+            counter-increment: section;
+            content: "0" counter(section) ".";
+            margin-right: 10px;
+            font-family: var(--font-code);
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            position: relative;
+            flex-grow: 1; /* Allow line to grow */
+            max-width: 300px; /* But limit its max width */
+            height: 1px;
+            margin-left: 20px;
+            background-color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        body {
+            counter-reset: section;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 50px;
+            align-items: flex-start; /* Align items to the top */
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .about-text ul {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(140px, 200px));
+            gap: 0px 10px;
+            padding: 0;
+            margin: 20px 0 0 0;
+            overflow: hidden;
+            list-style: none;
+        }
+
+        .about-text ul li {
+            position: relative;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .about-text ul li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1rem;
+            line-height: 1.2; /* Adjust line height */
+        }
+
+        .about-image {
+            position: relative;
+            width: 100%; /* Allow flexibility */
+            max-width: 300px; /* Limit max size */
+            margin: 0 auto; /* Center */
+            overflow: hidden; /* Hide overflow for scale effect */
+            border-radius: 4px;
+        }
+
+        .about-image img.profile-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            max-width: 100%; /* Ensure image is responsive */
+            filter: contrast(1.1) brightness(0.95); /* Slight enhancement */
+            mix-blend-mode: screen; /* Example blend mode */
+            opacity: 0; /* Start hidden for animation */
+        }
+
+        .about-image img.profile-image.visible { /* Style for when image is visible */
+            opacity: 1;
+            animation: fadeInImg 0.8s ease-in forwards; /* Apply animation */
+        }
+
+        .about-image:hover img.profile-image {
+            transform: scale(1.03); /* Subtle scale on hover */
+            filter: contrast(1) brightness(1); /* Reset filter on hover */
+            mix-blend-mode: normal;
+        }
+
+        .about-image::after { /* Decorative border */
+            content: "";
+            display: block;
+            position: absolute;
+            width: calc(100% - 4px); /* Adjust size slightly */
+            height: calc(100% - 4px);
+            border-radius: 4px;
+            border: 2px solid var(--accent);
+            top: 15px;
+            left: 15px;
+            z-index: -1;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .about-image:hover::after {
+            top: 10px;
+            left: 10px;
+        }
+
+        /* Security Badges */
+        .security-badges {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 5px 10px;
+            /* Removed margin-right/bottom, using gap now */
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .security-badge:hover {
+            background-color: rgba(255, 51, 102, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 51, 102, 0.2); /* Add subtle shadow */
+        }
+
+        .security-badge i {
+            margin-right: 5px;
+            font-size: 0.9em; /* Adjust icon size */
+        }
+
+        /* Experience Section - Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 50px auto; /* Add top margin */
+        }
+
+        .timeline::after { /* The central line */
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--text-secondary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+            opacity: 0.3;
+            z-index: 0; /* Behind items */
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth transition */
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item::after { /* The circle on the timeline */
+            content: '';
+            position: absolute;
+            width: 16px; /* Slightly smaller */
+            height: 16px;
+            background: var(--accent-gradient);
+            border: 2px solid var(--primary); /* Border matching background */
+            border-radius: 50%;
+            top: 20px; /* Align with content */
+            z-index: 1; /* Above the line */
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover::after {
+            transform: scale(1.2); /* Scale circle on hover */
+        }
+
+        .left {
+            left: 0;
+            text-align: right; /* Align text for left items */
+        }
+
+        .right {
+            left: 50%;
+            text-align: left; /* Align text for right items */
+        }
+
+        .left::after {
+            right: -8px; /* Position circle correctly */
+        }
+
+        .right::after {
+            left: -8px; /* Position circle correctly */
+        }
+
+        .timeline-content {
+            padding: 20px 25px;
+            background-color: var(--secondary);
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; /* Needed for pseudo-elements if any */
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-date {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: block; /* Ensure it takes full width */
+        }
+
+        .timeline-title {
+            font-size: 1.4rem; /* Adjusted size */
+            margin-bottom: 5px;
+            font-weight: 600; /* Bolder title */
+            color: var(--text-primary);
+        }
+
+        .timeline-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem; /* Slightly larger description */
+        }
+
+        .timeline-desc ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        .timeline-desc ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            text-align: left; /* Ensure list items are left-aligned */
+        }
+
+        .timeline-desc ul li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            line-height: 1.2; /* Match other list bullets */
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            position: relative; /* For potential absolute elements inside */
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden; /* Needed for hover effects */
+            background-color: var(--secondary);
+            border-radius: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Ensure cards in a row have same height */
+            display: flex; /* Use flex for inner content */
+            flex-direction: column; /* Stack content vertically */
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7); /* Base shadow */
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: var(--card-delay, 0s); /* Use variable for delay */
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px); /* Lift effect */
+            box-shadow: 0 15px 35px -15px rgba(2, 12, 27, 0.8); /* Enhanced shadow */
+        }
+
+        .project-card-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Push tech list to bottom */
+            flex-grow: 1; /* Allow inner content to grow */
+            padding: 2rem 1.75rem;
+        }
+
+        .project-top {
+            display: flex; /* Align folder and links */
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px; /* Space below top section */
+        }
+
+        .folder {
+            color: var(--accent);
+            font-size: 2.5rem;
+            /* Removed margin-bottom */
+        }
+
+        .project-links {
+            display: flex;
+            align-items: center;
+            /* Removed margin-top/left, handled by flex justify */
+        }
+
+        .project-links a {
+            color: var(--text-secondary); /* Dimmer default color */
+            font-size: 1.25rem;
+            margin-left: 16px; /* Space between icons */
+            transition: all 0.3s ease;
+            display: inline-block; /* Needed for transform */
+        }
+
+        .project-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+         /* Add hover effect for project title */
+        .project-title a { /* Assuming title could be a link */
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+        .project-title a:hover {
+            color: var(--accent);
+        }
+
+
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px; /* Add space before tech list */
+            flex-grow: 1; /* Allow description to take available space */
+        }
+
+        .project-tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin-top: auto; /* Push to bottom */
+            gap: 5px 15px; /* Row and column gap */
+        }
+
+        .project-tech-list li {
+            font-family: var(--font-code);
+            font-size: 0.8rem; /* Slightly smaller tech items */
+            color: var(--text-secondary);
+            /* Removed margin */
+            background-color: rgba(255, 255, 255, 0.05); /* Subtle background */
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Skills Section */
+        .skills {
+            padding-bottom: 150px; /* Reduced bottom padding */
+        }
+
+        .skills-container {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .skill-category {
+            margin-bottom: 30px;
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px; /* Increased space below title */
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .skill-category h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-secondary), transparent);
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px; /* Increased gap */
+        }
+
+        .skill-item {
+            background-color: var(--secondary);
+            border-radius: 4px;
+            padding: 20px 15px; /* Increased padding */
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            opacity: 0;
+            transform: translateY(20px);
+            border: 1px solid transparent; /* Placeholder for hover border */
+            min-height: 120px; /* Ensure minimum height */
+        }
+
+        .skill-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: var(--skill-delay, 0s); /* Stagger animation */
+        }
+
+        .skill-item::before { /* Animated border indicator */
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px; /* Thinner indicator */
+            height: 100%;
+            background: var(--accent-gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px) scale(1.02); /* Combined effect */
+            box-shadow: 0 12px 35px -15px rgba(2, 12, 27, 0.8);
+            border-color: rgba(255, 51, 102, 0.3); /* Subtle border on hover */
+        }
+
+        .skill-item:hover::before {
+            transform: scaleY(1);
+            transform-origin: top; /* Animate from top */
+        }
+
+        .skill-icon {
+            font-size: 2.2rem; /* Larger icon */
+            color: var(--accent);
+            margin-bottom: 15px; /* More space below icon */
+            transition: transform 0.3s ease;
+        }
+
+        .skill-item:hover .skill-icon {
+            transform: scale(1.1); /* Scale icon on hover */
+        }
+
+        .skill-name {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-top: auto; /* Push name down if needed */
+        }
+
+        /* Inventory Section Styles */
+        .inventory {
+            padding-bottom: 150px; /* Reduced bottom padding */
+        }
+
+        .inventory-category {
+            margin-bottom: 50px;
+        }
+
+        .inventory-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .inventory-category h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-secondary), transparent);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px; /* Increased gap */
+        }
+
+        .inventory-item {
+            background-color: var(--secondary);
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            position: relative;
+            overflow: hidden; /* Important for image zoom */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            border: 1px solid transparent;
+        }
+
+        .inventory-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: var(--inventory-delay, 0s); /* Stagger animation */
+        }
+
+        .inventory-item::before { /* Animated border indicator */
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px; /* Top indicator */
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .inventory-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px -15px rgba(2, 12, 27, 0.8);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .inventory-item:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .inventory-image {
+            width: 100%;
+            margin-bottom: 15px;
+            overflow: hidden; /* Crucial for image zoom effect */
+            border-radius: 3px 3px 0 0; /* Round top corners */
+            aspect-ratio: 16 / 10; /* Maintain aspect ratio */
+        }
+
+        .inventory-image img {
+            width: 100%;
+            height: 100%; /* Ensure image fills container */
+            object-fit: cover; /* Cover the area, might crop */
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth zoom */
+        }
+
+        .inventory-item:hover .inventory-image img {
+            transform: scale(1.1); /* Zoom effect */
+        }
+
+        /* Content below image */
+        .inventory-content {
+            padding: 15px 20px 20px; /* Padding for text */
+            width: 100%; /* Take full width */
+        }
+
+        .inventory-name {
+            font-family: var(--font-code);
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .inventory-specs {
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto; /* Center horizontally */
+            padding-bottom: 150px; /* Reduced padding */
+            display: flex; /* Use flex for easier centering */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact h2.section-title { /* Override default section title style if needed */
+             justify-content: center; /* Center title elements */
+             font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+             margin-bottom: 1rem;
+        }
+         .contact h2.section-title::before { /* Style the number */
+            display: block;
+            margin: 0 auto 15px; /* Center and add space below */
+            font-family: var(--font-code);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: var(--accent);
+            content: "0" counter(section) ". What's Next?"; /* Use the counter */
+         }
+         .contact h2.section-title::after {
+             display: none; /* Hide the line */
+         }
+
+        .contact-title-text { /* The actual "Get In Touch" text */
+            display: block;
+            margin-top: 10px; /* Space below number */
+        }
+
+        .contact p {
+            color: var(--text-secondary);
+            margin-bottom: 40px; /* Reduced space */
+            font-size: clamp(1rem, 2.5vw, 1.1rem); /* Responsive font size */
+        }
+
+        .contact-btn { /* Inherits from .btn, specific adjustments */
+            display: inline-block;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1rem 2rem; /* Adjusted padding */
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-family: var(--font-code);
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+            margin-top: 0; /* Remove top margin if added by .btn */
+        }
+
+        .contact-btn:hover {
+            background-color: rgba(255, 51, 102, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin-top: 50px;
+            gap: 30px; /* Use gap for spacing */
+        }
+
+        .social-links li {
+             /* Removed margin */
+        }
+
+        .social-links a {
+            display: inline-block;
+            color: var(--text-secondary); /* Dimmer default */
+            font-size: 1.6rem; /* Larger icons */
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-4px) scale(1.1); /* Combined effect */
+        }
+
+
+        /* Footer */
+        footer {
+            padding: 25px 0; /* Increased padding */
+            text-align: center;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+            margin-top: 50px; /* Space above footer */
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+         footer a:hover {
+             text-decoration: underline;
+             color: var(--accent-secondary);
+         }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px; /* Adjusted position */
+            right: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px; /* Adjusted size */
+            height: 45px;
+            background-color: var(--secondary);
+            color: var(--accent);
+            border-radius: 4px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden; /* Add visibility */
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+            z-index: 99;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            border: 1px solid var(--accent);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background-color: rgba(255, 51, 102, 0.1);
+            transform: translateY(-3px) scale(1.05); /* Combined effect */
+            box-shadow: 0 12px 35px -15px rgba(2, 12, 27, 0.8);
+        }
+        .back-to-top i {
+            font-size: 1.1rem;
+        }
+
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0; /* Start hidden */
+        }
+
+        /* Staggered Animation Delays */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; } /* Added for extra nav item */
+
+        /* Lazy loading animation for images */
+        @keyframes fadeInImg {
+            from { opacity: 0; filter: blur(5px); } /* Start blurred */
+            to { opacity: 1; filter: blur(0px); }
+        }
+
+        .lazy-image {
+            /* Base style set in .about-image img.profile-image */
+            /* Animation applied via JS when visible */
+        }
+
+        /* Terminal Effect */
+        .terminal-effect {
+            position: relative;
+            padding: 20px;
+            background-color: rgba(16, 30, 54, 0.6); /* Slightly more opaque */
+            border-radius: 4px;
+            font-family: var(--font-code);
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            overflow: hidden;
+            margin: 40px 0;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px; /* Space below header */
+            border-bottom: 1px solid rgba(100, 255, 218, 0.2); /* Separator */
+        }
+
+        .terminal-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .terminal-circle:nth-child(1) { background-color: #ff5f56; }
+        .terminal-circle:nth-child(2) { background-color: #ffbd2e; }
+        .terminal-circle:nth-child(3) { background-color: #27c93f; }
+
+        .terminal-title {
+            margin-left: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap; /* Prevent title wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Add ellipsis if too long */
+        }
+
+        .typing-effect {
+            display: inline-block; /* Changed from block */
+            overflow: hidden;
+            border-right: 0.15em solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end) forwards, /* Run once */
+                       blink-caret 0.75s step-end infinite;
+            margin: 0;
+            color: var(--accent);
+            letter-spacing: 0.1em; /* Add spacing */
+            max-width: 100%; /* Ensure it doesn't overflow container */
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent) }
+        }
+
+        /* Glitch Effect */
+        .glitch-effect {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            background: var(--primary); /* Match background */
+            overflow: hidden;
+        }
+
+        .glitch-effect::before {
+            color: #0ff; /* Cyan */
+            z-index: -1;
+            animation: glitch-anim1 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+
+        .glitch-effect::after {
+            color: #f0f; /* Magenta */
+            z-index: -2;
+            animation: glitch-anim2 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+        /* More subtle glitch animations */
+        @keyframes glitch-anim1 {
+            0% { clip-path: inset(21% 0 78% 0); transform: translate(-1px, -1px); }
+            10% { clip-path: inset(47% 0 52% 0); transform: translate(1px, 1px); }
+            20% { clip-path: inset(99% 0 1% 0); transform: translate(-1px, 1px); }
+            30% { clip-path: inset(43% 0 5% 0); transform: translate(1px, -1px); }
+            40% { clip-path: inset(18% 0 42% 0); transform: translate(-1px, -1px); }
+            50% { clip-path: inset(90% 0 3% 0); transform: translate(1px, 1px); }
+            60% { clip-path: inset(37% 0 14% 0); transform: translate(-1px, 1px); }
+            70% { clip-path: inset(94% 0 5% 0); transform: translate(1px, -1px); }
+            80% { clip-path: inset(20% 0 61% 0); transform: translate(-1px, -1px); }
+            90% { clip-path: inset(62% 0 3% 0); transform: translate(1px, 1px); }
+            100% { clip-path: inset(4% 0 81% 0); transform: translate(-1px, 1px); }
+        }
+        @keyframes glitch-anim2 {
+             0% { clip-path: inset(91% 0 3% 0); transform: translate(1px, 1px); }
+             10% { clip-path: inset(16% 0 57% 0); transform: translate(-1px, -1px); }
+             20% { clip-path: inset(8% 0 11% 0); transform: translate(1px, -1px); }
+             30% { clip-path: inset(86% 0 7% 0); transform: translate(-1px, 1px); }
+             40% { clip-path: inset(41% 0 54% 0); transform: translate(1px, 1px); }
+             50% { clip-path: inset(23% 0 75% 0); transform: translate(-1px, -1px); }
+             60% { clip-path: inset(70% 0 2% 0); transform: translate(1px, -1px); }
+             70% { clip-path: inset(3% 0 91% 0); transform: translate(-1px, 1px); }
+             80% { clip-path: inset(59% 0 34% 0); transform: translate(1px, 1px); }
+             90% { clip-path: inset(7% 0 48% 0); transform: translate(-1px, -1px); }
+             100% { clip-path: inset(83% 0 1% 0); transform: translate(1px, -1px); }
+         }
+
+        /* Cyber Button */
+        .cyber-btn {
+            position: relative;
+            display: inline-flex; /* Use inline-flex */
+            align-items: center; /* Center text vertically */
+            justify-content: center; /* Center text horizontally */
+            padding: 10px 20px;
+            color: var(--accent);
+            background: transparent;
+            border: 1px solid var(--accent);
+            font-family: var(--font-code);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            overflow: hidden; /* Keep overflow hidden */
+            transition: color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease; /* Smooth transitions */
+            margin-top: 2rem; /* Adjusted from original btn */
+            text-decoration: none;
+            font-size: 0.9rem; /* Match .btn */
+            line-height: 1.6; /* Ensure text fits */
+        }
+
+        .cyber-btn:hover {
+            background: var(--accent); /* Solid background on hover */
+            color: var(--primary); /* Dark text on hover */
+            box-shadow: 0 0 5px var(--accent),
+                        0 0 15px var(--accent), /* Reduced glow */
+                        0 0 30px var(--accent);
+                       /* 0 0 100px var(--accent); Removed large glow */
+        }
+
+        .cyber-btn span { /* Animated border elements */
+            position: absolute;
+            display: block;
+        }
+
+        /* Animations for cyber button borders */
+        .cyber-btn span:nth-child(1) { /* Top */
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary));
+            animation: btn-anim1 1.5s linear infinite; /* Slower animation */
+        }
+
+        @keyframes btn-anim1 {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        .cyber-btn span:nth-child(2) { /* Right */
+            top: -100%;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--accent-secondary));
+            animation: btn-anim2 1.5s linear infinite;
+            animation-delay: 0.375s; /* Stagger start */
+        }
+
+        @keyframes btn-anim2 {
+            0% { top: -100%; }
+            50%, 100% { top: 100%; }
+        }
+
+        .cyber-btn span:nth-child(3) { /* Bottom */
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(270deg, transparent, var(--accent-secondary));
+            animation: btn-anim3 1.5s linear infinite;
+            animation-delay: 0.75s; /* Stagger start */
+        }
+
+        @keyframes btn-anim3 {
+            0% { right: -100%; }
+            50%, 100% { right: 100%; }
+        }
+
+        .cyber-btn span:nth-child(4) { /* Left */
+            bottom: -100%;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(360deg, transparent, var(--accent-secondary));
+            animation: btn-anim4 1.5s linear infinite;
+            animation-delay: 1.125s; /* Stagger start */
+        }
+
+        @keyframes btn-anim4 {
+            0% { bottom: -100%; }
+            50%, 100% { bottom: 100%; }
+        }
+
+        /* Matrix Rain Background */
+        .matrix-bg {
+            position: fixed; /* Use fixed to cover viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind content */
+            opacity: 0.07; /* Slightly more visible */
+            pointer-events: none; /* Ignore mouse events */
+            background-color: var(--primary); /* Ensure background color */
+        }
+
 
         /* Menu overlay for mobile */
         .menu-overlay {
-            display: block; /* Keep it in the layout */
+            display: block; /* Keep it in layout */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(10, 15, 23, 0.7);
-            backdrop-filter: blur(5px); /* Slightly increased blur */
+            background-color: rgba(10, 15, 23, 0.7); /* Semi-transparent background */
+            backdrop-filter: blur(5px); /* Apply blur */
             -webkit-backdrop-filter: blur(5px); /* Safari */
             z-index: 998; /* Below menu (999) and hamburger (1000) */
             opacity: 0;
             visibility: hidden; /* Start hidden */
-            transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Delay hiding */
+            transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s; /* Delay hiding visibility */
         }
 
         .menu-overlay.active {
             opacity: 1;
             visibility: visible; /* Become visible */
-            transition: opacity 0.3s ease, visibility 0s linear 0s; /* Show immediately */
+            transition: opacity 0.3s ease-in-out, visibility 0s linear 0s; /* Show immediately */
+        }
+
+        /* Styles for touch devices (optional) */
+        .touch-device .project-card:hover,
+        .touch-device .skill-item:hover,
+        .touch-device .timeline-content:hover {
+            transform: none; /* Disable hover transform on touch */
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7); /* Reset shadow */
+        }
+
+        /* Add active state for touch */
+        .touch-device .skill-item:active,
+        .touch-device .project-card:active,
+        .touch-device .timeline-content:active {
+            transform: translateY(-5px); /* Lift effect on tap */
+            box-shadow: 0 12px 35px -15px rgba(2, 12, 27, 0.8);
         }
 
 
-        /* Responsive Styles */
+        /* RESPONSIVE STYLES */
+
+        @media screen and (max-width: 1024px) {
+            /* Adjust grid for tablets */
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            .inventory-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+             .skill-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+        }
+
+
         @media screen and (max-width: 768px) {
+             /* Adjust header height and scroll offset */
+             header, header.scrolled {
+                 height: var(--header-height-mobile);
+                 padding: 0.8rem 0; /* Consistent padding */
+             }
+              section {
+                 scroll-margin-top: var(--header-height-mobile);
+             }
+             #home {
+                 padding-top: var(--header-height-mobile);
+                 scroll-margin-top: 0; /* Keep home offset 0 */
+             }
+
             .nav-container {
                 padding: 0 1rem; /* Adjust padding for smaller screens */
             }
+
             .hamburger {
                 display: flex; /* Show hamburger */
             }
 
-            .hamburger.active .line:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-
-            .hamburger.active .line:nth-child(2) {
-                opacity: 0;
-            }
-
-            .hamburger.active .line:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-
+             /* Hide desktop nav links */
             nav ul {
-                position: fixed;
+                position: fixed; /* Change to fixed positioning */
                 right: -100%; /* Start off-screen */
                 top: 0;
-                height: 100vh;
-                width: min(75%, 300px); /* Use min for responsive width */
-               /* max-width: 300px; remove this, handled by min() */
-                background-color: var(--secondary);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                transition: right 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-                padding: 80px 0 50px;
+                height: 100vh; /* Full viewport height */
+                width: min(75%, 300px); /* Responsive width, max 300px */
+                background-color: var(--secondary); /* Menu background */
+                flex-direction: column; /* Stack items vertically */
+                justify-content: center; /* Center items vertically */
+                align-items: center; /* Center items horizontally */
+                transition: right 0.4s cubic-bezier(0.645, 0.045, 0.355, 1); /* Slide transition */
+                padding: 80px 20px 50px; /* Add padding */
                 box-shadow: -10px 0px 30px -15px rgba(2, 12, 27, 0.7);
                 z-index: 999; /* Above overlay */
                 margin: 0; /* Reset margin */
+                /* Remove align-items and height from desktop rules */
+                display: flex; /* Ensure it's flex for column layout */
             }
+
 
             nav ul.active {
                 right: 0; /* Slide in */
             }
 
             nav ul li {
-                margin: 1.5rem 0;
+                margin: 1.5rem 0; /* Vertical margin */
                 opacity: 0;
-                transform: translateY(20px);
-                transition: opacity 0.3s ease, transform 0.3s ease; /* Separate transitions */
-                /* transition-delay will be handled by JS if needed, or use CSS nth-child */
+                transform: translateX(20px); /* Slide in from right */
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                width: 100%; /* Make list items full width */
+                text-align: center; /* Center text */
             }
 
             nav ul.active li {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
 
             /* Stagger animation with CSS */
-            nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
-            nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
-            nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
-            nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
-            nav ul.active li:nth-child(5) { transition-delay: 0.5s; }
-            nav ul.active li:nth-child(6) { transition-delay: 0.6s; } /* Added for inventory */
-            nav ul.active li:nth-child(7) { transition-delay: 0.7s; } /* Added for contact */
-
+            nav ul.active li:nth-child(1) { transition-delay: 0.15s; }
+            nav ul.active li:nth-child(2) { transition-delay: 0.20s; }
+            nav ul.active li:nth-child(3) { transition-delay: 0.25s; }
+            nav ul.active li:nth-child(4) { transition-delay: 0.30s; }
+            nav ul.active li:nth-child(5) { transition-delay: 0.35s; }
+            nav ul.active li:nth-child(6) { transition-delay: 0.40s; } /* Inventory */
+            nav ul.active li:nth-child(7) { transition-delay: 0.45s; } /* Contact */
 
             nav ul li a {
-                display: inline-block;
-                font-size: 1rem;
-                padding: 10px;
+                display: block; /* Make links block for full width tap */
+                font-size: 1.1rem; /* Larger font */
+                padding: 10px 0;
+                color: var(--text-primary); /* Ensure visibility */
+            }
+            nav ul li a::before { /* Adjust numbering style */
+                display: block; /* Number above text */
+                margin: 0 auto 5px; /* Center and space */
+                font-size: 0.9rem;
             }
 
-             section {
-                /* Adjust scroll margin for mobile header */
-                 scroll-margin-top: 60px; /* Smaller header height */
-             }
-             #home {
-                 scroll-margin-top: 0;
-             }
 
+            /* Hero adjustments */
+            .hero h1 {
+                font-size: clamp(2.5rem, 8vw, 3.5rem); /* Responsive H1 */
+            }
+            .hero h2 {
+                font-size: clamp(1.5rem, 5vw, 2.2rem); /* Responsive H2 */
+            }
+            .hero p {
+                font-size: clamp(0.95rem, 2.5vw, 1.1rem); /* Responsive P */
+            }
 
-            /* ... (rest of your responsive CSS) ... */
+            /* About adjustments */
+            .about-content {
+                grid-template-columns: 1fr; /* Stack columns */
+                gap: 40px;
+            }
+            .about-image {
+                grid-row: 1; /* Move image to top */
+                width: 80%;
+                max-width: 250px;
+                margin: 0 auto 40px; /* Adjust margin */
+            }
+            .about-image::after { /* Adjust decorative border */
+                top: 10px;
+                left: 10px;
+            }
+
+            /* Section Title Line */
+            .section-title::after {
+                max-width: 100px; /* Shorter line */
+                flex-grow: 0; /* Don't allow growth */
+            }
+
+            /* Timeline adjustments */
+            .timeline::after {
+                left: 31px; /* Move line to left */
+            }
+            .timeline-item {
+                width: 100%; /* Full width */
+                padding-left: 70px; /* Space for circle and line */
+                padding-right: 15px; /* Reduce right padding */
+                text-align: left !important; /* Force left align */
+            }
+             .timeline-item.left, .timeline-item.right {
+                 left: 0; /* Reset left positioning */
+             }
+            .timeline-item::after { /* Position circle */
+                left: 23px; /* Align with the line */
+                top: 22px;
+            }
+            .left::after, .right::after { /* Ensure consistent circle position */
+                left: 23px;
+            }
+
+            /* Project Grid on Mobile */
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust min size */
+                gap: 20px;
+            }
+
+            /* Skills Grid on Mobile */
+            .skill-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 15px;
+            }
+
+             /* Inventory Grid on Mobile */
+            .inventory-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 20px;
+            }
+
+            /* Back to Top button smaller */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+            .back-to-top i {
+                font-size: 1rem;
+            }
+
+            /* Reduce particles/matrix density if desired */
+            #particles-js { opacity: 0.5; }
+            .matrix-bg { opacity: 0.05; }
         }
 
-         @media screen and (max-width: 480px) {
-            .nav-container {
-                 padding: 0 10px; /* Further reduce padding */
+
+        @media screen and (max-width: 600px) {
+             /* Further adjustments for smaller phones */
+             .container {
+                 padding: 0 1.5rem; /* Slightly more padding */
+             }
+             .skill-grid {
+                 grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+             }
+              .inventory-grid {
+                  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smaller items */
+                  gap: 15px;
+             }
+             .inventory-name { font-size: 1rem; }
+             .inventory-specs { font-size: 0.85rem; }
+
+             .timeline-item {
+                 padding-left: 60px; /* Less padding */
+             }
+             .timeline-item::after {
+                 left: 18px; /* Adjust circle */
+                 width: 14px;
+                 height: 14px;
+             }
+             .left::after, .right::after { left: 18px; }
+             .timeline::after { left: 25px; } /* Adjust line */
+        }
+
+
+        @media screen and (max-width: 480px) {
+             .container {
+                 padding: 0 1rem; /* Reduce padding again */
+             }
+             /* Header & Nav */
+             .logo { font-size: 1.3rem; }
+             .nav-container { padding: 0 1rem; }
+
+             /* Hero Text */
+             .hero h1 { font-size: clamp(2rem, 10vw, 2.5rem); line-height: 1.2; }
+             .hero h2 { font-size: clamp(1.3rem, 7vw, 1.6rem); line-height: 1.3; }
+             .hero p { font-size: 0.9rem; max-width: 100%; padding-right: 0; }
+             .hero-content { width: 100%; padding: 0; } /* Remove padding if any */
+
+             /* Section Titles */
+             .section-title { font-size: 1.6rem; margin-bottom: 2rem; }
+             .section-title::before { font-size: 1.2rem; }
+             .section-title::after { max-width: 50px; margin-left: 15px; }
+
+             /* About Section */
+             .about-text ul { grid-template-columns: 1fr; /* Single column list */ }
+             .about-image { max-width: 200px; }
+             .about-image::after { top: 8px; left: 8px; }
+
+             /* Terminal Effect */
+             .terminal-effect { padding: 15px; margin: 30px 0; }
+             .typing-effect {
+                 font-size: 0.85rem;
+                 white-space: normal; /* Allow wrap on small screens */
+                 animation: none; /* Disable typing animation */
+                 border-right: none; /* Remove caret */
+                 width: auto !important; /* Let it take natural width */
+             }
+
+             /* Projects */
+             .projects-grid { gap: 15px; grid-template-columns: 1fr; /* Single column */ }
+             .project-card-inner { padding: 1.5rem 1.25rem; }
+             .project-title { font-size: 1.25rem; }
+             .project-description { font-size: 0.9rem; }
+             .project-tech-list li { font-size: 0.75rem; }
+
+             /* Buttons */
+             .btn, .cyber-btn, .contact-btn {
+                 padding: 0.9rem 1.4rem;
+                 font-size: 0.8rem;
+             }
+
+             /* Sections Padding */
+             section { padding: 80px 0; min-height: auto; /* Allow sections to be smaller */ }
+             #home { padding-top: var(--header-height-mobile); } /* Still need home padding */
+
+             /* Contact */
+             .contact { padding-bottom: 120px; }
+             .contact h2.section-title { font-size: clamp(1.8rem, 6vw, 2.2rem); }
+             .contact p { font-size: 0.95rem; }
+             .social-links { gap: 20px; }
+             .social-links a { font-size: 1.4rem; }
+
+             /* Inventory */
+             .inventory-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+             .inventory-name { font-size: 0.9rem; }
+             .inventory-specs { font-size: 0.8rem; }
+             .inventory-content { padding: 10px 15px 15px; }
+
+             /* Backgrounds */
+             .matrix-bg { opacity: 0.03; } /* Very faint */
+         }
+
+        @media screen and (max-width: 400px) {
+            /* Even smaller adjustments */
+            .skill-grid { grid-template-columns: 1fr; } /* Single column skills */
+            nav ul { width: 85%; } /* Slightly wider menu */
+            .logo { font-size: 1.2rem; }
+            .nav-container { padding: 0 10px; }
+        }
+
+
+        /* Reduced Motion Preferences */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto !important; /* Disable smooth scroll */
             }
-            /* ... other 480px styles ... */
-              section {
-                /* Adjust scroll margin for smallest header */
-                 scroll-margin-top: 50px; /* Potentially even smaller */
-             }
-             #home {
-                 scroll-margin-top: 0;
-             }
-         }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                animation-delay: 0ms !important; /* Remove delays */
+            }
 
-         @media screen and (max-width: 400px) {
-             .nav-container {
-                 padding: 0 10px;
-             }
-             /* ... other 400px styles ... */
-         }
+             /* Reset transforms and opacity for animated elements */
+            .animate-in, .project-card, .timeline-item, .skill-item, .inventory-item,
+            .about-image img.profile-image {
+                opacity: 1 !important;
+                transform: none !important;
+            }
 
-         /* ... (rest of your CSS like animations, etc.) ... */
+            /* Specific animation disables */
+            .typing-effect {
+                animation: none !important;
+                border-right: none !important;
+                white-space: normal; /* Ensure text is visible */
+                width: auto !important;
+            }
+            .glitch-effect::before, .glitch-effect::after {
+                 display: none; /* Hide glitch layers */
+            }
+            .cyber-btn span {
+                 animation: none !important; /* Disable button border animations */
+                 display: none; /* Hide them */
+            }
+             .cyber-btn:hover { /* Simplify hover */
+                 background: var(--accent);
+                 color: var(--primary);
+                 box-shadow: none;
+             }
+             .skill-item:hover, .project-card:hover, .timeline-content:hover,
+             .inventory-item:hover, .back-to-top:hover, .security-badge:hover,
+             .social-links a:hover {
+                 transform: none !important; /* Disable hover transforms */
+             }
+             .skill-item:hover::before, .inventory-item:hover::before {
+                 transform: none !important; /* Disable hover indicators */
+             }
+
+            /* Background effects */
+            #particles-js canvas {
+                opacity: 0.1 !important; /* Reduce particle opacity significantly */
+            }
+            #matrix-rain {
+                display: none !important; /* Hide matrix rain */
+            }
+        }
 
     </style>
 </head>
@@ -320,47 +1735,47 @@
     <div class="menu-overlay"></div>
 
     <header>
-        <div class="container nav-container"> {/* Ensured container wraps nav content */}
-            <div class="logo animate-in">
-                <AD▲/>
-            </div>
+        <div class="container nav-container"> {/* Container for alignment */}
+            <a href="#home" class="logo animate-in"> {/* Make logo a link to home */}
+                &lt;AD▲/&gt;
+            </a>
 
-            {/* Hamburger moved here, inside nav-container */}
-            <div class="hamburger">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
+            {/* Hamburger Trigger */}
+            <button class="hamburger" aria-label="Open Menu" aria-expanded="false">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
 
-            <nav>
-                 {/* This UL is the one that slides */}
-                <ul>
-                    <li class="animate-in delay-1"><a href="#about">About</a></li>
-                    <li class="animate-in delay-2"><a href="#experience">Experience</a></li>
-                    <li class="animate-in delay-3"><a href="#projects">Projects</a></li>
-                    <li class="animate-in delay-4"><a href="#skills">Skills</a></li>
-                    <li class="animate-in delay-5"><a href="#inventory">Inventory</a></li> {/* Corrected numbering */}
-                    <li class="animate-in delay-6"><a href="#contact">Contact</a></li>   {/* Corrected numbering */}
+            <nav aria-label="Main Navigation">
+                 {/* This UL is the main navigation, hidden on mobile, slides in */}
+                <ul id="nav-menu">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#inventory">Inventory</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main>
-        {/* Add id="home" to the hero section if you want a #home link */}
+        {/* Home Section (Hero) */}
         <section id="home" class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <p class="subtitle animate-in">Hi, my name is</p>
-                    <h1 class="animate-in delay-1">Adrijeet Deb.</h1>
-                    <h2 class="animate-in delay-2">I secure digital frontiers.</h2>
-                    <p class="animate-in delay-3">
+                    <p class="subtitle animate-in" style="animation-delay: 0.1s;">Hi, my name is</p>
+                    <h1 class="animate-in" style="animation-delay: 0.2s;">Adrijeet Deb.</h1>
+                    <h2 class="animate-in" style="animation-delay: 0.3s;">I secure digital frontiers.</h2>
+                    <p class="animate-in" style="animation-delay: 0.4s;">
                         I'm an information security specialist with expertise in blockchain, biometrics, and system security.
                         Currently pursuing a Master's in Information Systems Security at Concordia University,
                         I build robust security solutions for the digital world.
                     </p>
 
-                    <div class="terminal-effect animate-in delay-4">
+                    <div class="terminal-effect animate-in" style="animation-delay: 0.5s;">
                         <div class="terminal-header">
                             <div class="terminal-circle"></div>
                             <div class="terminal-circle"></div>
@@ -370,7 +1785,7 @@
                         <p class="typing-effect">$ ./initialize_secure_connection.sh</p>
                     </div>
 
-                    <a href="#projects" class="cyber-btn animate-in delay-5">
+                    <a href="#projects" class="cyber-btn animate-in" style="animation-delay: 0.6s;">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -381,28 +1796,24 @@
             </div>
         </section>
 
+        {/* About Section */}
         <section id="about" class="about">
              <div class="container">
                  <h2 class="section-title">About Me</h2>
-
                  <div class="about-content">
                      <div class="about-text">
                          <p>
                              Hello! I'm Adrijeet, a cybersecurity enthusiast and professional passionate about creating secure systems that protect digital assets and information. My journey in information security began during my undergraduate studies at Vellore Institute of Technology, where I specialized in Information Security.
                          </p>
-
                          <p>
                              Currently, I'm pursuing a Master's in Information Systems Security at Concordia University, deepening my knowledge in advanced security concepts and techniques. My research interests include blockchain technology, biometric authentication, and secure voting systems.
                          </p>
-
                          <p>
                              Throughout my career, I've worked on innovative security solutions, from blockchain-based e-voting systems to keystroke dynamic authentication mechanisms. I believe in the power of technology to create more secure and trustworthy digital experiences.
                          </p>
-
                          <p>
                              Here are a few technologies I've been working with recently:
                          </p>
-
                          <ul>
                              <li>Blockchain (Solidity/Ganache)</li>
                              <li>Biometric Authentication</li>
@@ -411,59 +1822,55 @@
                              <li>SQL (PostgreSQL)</li>
                              <li>Cloud Security (AWS/Azure/GCP)</li>
                          </ul>
-
-                         <div class="security-badges" style="margin-top: 20px;">
+                         <div class="security-badges">
                              <span class="security-badge"><i class="fas fa-shield-alt"></i> Information Security</span>
                              <span class="security-badge"><i class="fas fa-lock"></i> Cybersecurity</span>
                              <span class="security-badge"><i class="fas fa-fingerprint"></i> Biometrics</span>
                              <span class="security-badge"><i class="fas fa-cubes"></i> Blockchain</span>
                          </div>
                      </div>
-
                      <div class="about-image">
-                         {/* Using the actual profile image now */}
-                         <img src="images/profile_photo.jpg" alt="Adrijeet Deb" class="profile-image lazy-image" loading="lazy" /> {/* Added lazy loading */}
+                         {/* Ensure image path is correct */}
+                         <img src="images/profile_photo.jpg" alt="Adrijeet Deb" class="profile-image lazy-image" loading="lazy" />
                      </div>
                  </div>
              </div>
          </section>
 
+        {/* Experience Section */}
         <section id="experience" class="experience">
             <div class="container">
                 <h2 class="section-title">Where I've Worked</h2>
-
                 <div class="timeline">
-                    {/* Timeline items ... */}
-                     <div class="timeline-item left">
-                         <div class="timeline-content">
-                             <div class="timeline-date">September 2021 - April 2022</div>
-                             <h3 class="timeline-title">Project Engineer</h3>
-                             <h4 class="timeline-subtitle">Robi Axiata Ltd.</h4>
-                             <div class="timeline-desc">
-                                 <ul>
-                                     <li>Developed an updated iteration of Minimum Baseline Security System with Huawei Bangladesh</li>
-                                     <li>Developed automation scripts as part of the OSS team to automate tasks and implement the new system</li>
-                                     <li>Prepared guidelines to allow seamless deployment of the new system nationwide</li>
-                                 </ul>
-                             </div>
-                         </div>
-                     </div>
-
-                     <div class="timeline-item right">
-                         <div class="timeline-content">
-                             <div class="timeline-date">May 2019 - June 2019</div>
-                             <h3 class="timeline-title">Summer Intern</h3>
-                             <h4 class="timeline-subtitle">New Technologies Systems Ltd.</h4>
-                             <div class="timeline-desc">
-                                 <ul>
-                                     <li>Developed new applications using ORACLE ERP (Forms builder and Supply Chain Management module)</li>
-                                     <li>Participated in software development for a hospital to provide digitized prescriptions to their patients</li>
-                                     <li>Led a team to design a network topology for handling the client's servers that ensures maximum efficiency</li>
-                                 </ul>
-                             </div>
-                         </div>
-                     </div>
-
+                    {/* Timeline Items - Add 'left' or 'right' class */}
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">September 2021 - April 2022</div>
+                            <h3 class="timeline-title">Project Engineer</h3>
+                            <h4 class="timeline-subtitle">Robi Axiata Ltd.</h4>
+                            <div class="timeline-desc">
+                                <ul>
+                                    <li>Developed an updated iteration of Minimum Baseline Security System with Huawei Bangladesh</li>
+                                    <li>Developed automation scripts as part of the OSS team to automate tasks and implement the new system</li>
+                                    <li>Prepared guidelines to allow seamless deployment of the new system nationwide</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">May 2019 - June 2019</div>
+                            <h3 class="timeline-title">Summer Intern</h3>
+                            <h4 class="timeline-subtitle">New Technologies Systems Ltd.</h4>
+                            <div class="timeline-desc">
+                                <ul>
+                                    <li>Developed new applications using ORACLE ERP (Forms builder and Supply Chain Management module)</li>
+                                    <li>Participated in software development for a hospital to provide digitized prescriptions to their patients</li>
+                                    <li>Led a team to design a network topology for handling the client's servers that ensures maximum efficiency</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                      <div class="timeline-item left">
                          <div class="timeline-content">
                              <div class="timeline-date">August 2020 - December 2022</div>
@@ -477,409 +1884,186 @@
                              </div>
                          </div>
                      </div>
+                     {/* Add more timeline items as needed */}
                 </div>
             </div>
         </section>
 
+        {/* Projects Section */}
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">Things I've Built</h2>
-
                 <div class="projects-grid">
-                    {/* Project cards ... */}
+                    {/* Project Cards */}
                     <div class="project-card">
-                         <div class="project-card-inner">
-                             <div>
-                                 <div class="project-top">
-                                     <div class="folder">
-                                         <i class="fas fa-folder"></i>
-                                     </div>
-                                     <div class="project-links">
-                                         <a href="https://github.com/ceoadlw/biometric-based-voting" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
-                                     </div>
-                                 </div>
-
-                                 <h3 class="project-title">Decentralized E-Voting System</h3>
-                                 <p class="project-description">
-                                     A novel e-voting method utilizing smart cards, blockchain and biometrics. Published in a journal, this project ensures hardware security, biometric encryption, and transparent, anonymous voting.
-                                 </p>
-                             </div>
-
-                             <ul class="project-tech-list">
-                                 <li>HTML/CSS/JS</li>
-                                 <li>PostgreSQL</li>
-                                 <li>PHP</li>
-                                 <li>Solidity</li>
-                                 <li>Ganache</li>
-                             </ul>
-                         </div>
-                     </div>
-
-                     <div class="project-card">
-                         <div class="project-card-inner">
-                             <div>
-                                 <div class="project-top">
-                                     <div class="folder">
-                                         <i class="fas fa-folder"></i>
-                                     </div>
-                                     <div class="project-links">
-                                         <a href="https://github.com/ceoadlw/KeystrokeDynamics-Authentication" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
-                                     </div>
-                                 </div>
-
-                                 <h3 class="project-title">Authentication Using Keystroke Dynamics</h3>
-                                 <p class="project-description">
-                                     An advanced authentication system that captures and analyzes keystroke timing patterns. Features multiple detection algorithms for enhanced security verification.
-                                 </p>
-                             </div>
-
-                             <ul class="project-tech-list">
-                                 <li>Node.js</li>
-                                 <li>HTML/CSS</li>
-                                 <li>MongoDB</li>
-                                 <li>JavaScript</li>
-                             </ul>
-                         </div>
-                     </div>
-
-                     <div class="project-card">
-                         <div class="project-card-inner">
-                             <div>
-                                 <div class="project-top">
-                                     <div class="folder">
-                                         <i class="fas fa-folder"></i>
-                                     </div>
-                                      {/* No link provided for this one */}
-                                 </div>
-
-                                 <h3 class="project-title">Minimum Baseline Security System</h3>
-                                 <p class="project-description">
-                                     Worked with Huawei Bangladesh to develop an updated iteration of a security system with automation scripts and nationwide deployment guidelines for Robi Axiata Ltd.
-                                 </p>
-                             </div>
-
-                             <ul class="project-tech-list">
-                                 <li>Python</li>
-                                 <li>Bash</li>
-                                 <li>Network Security</li>
-                             </ul>
-                         </div>
-                     </div>
+                        <div class="project-card-inner">
+                            <div> {/* Top part */}
+                                <div class="project-top">
+                                    <div class="folder"><i class="fas fa-folder-open"></i></div> {/* Changed icon */}
+                                    <div class="project-links">
+                                        <a href="https://github.com/ceoadlw/biometric-based-voting" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
+                                        {/* Add other links like external link if available */}
+                                    </div>
+                                </div>
+                                <h3 class="project-title">Decentralized E-Voting System</h3>
+                                <p class="project-description">
+                                    A novel e-voting method utilizing smart cards, blockchain and biometrics. Published in a journal, this project ensures hardware security, biometric encryption, and transparent, anonymous voting.
+                                </p>
+                            </div>
+                            <div> {/* Bottom part */}
+                                <ul class="project-tech-list">
+                                    <li>HTML/CSS/JS</li><li>PostgreSQL</li><li>PHP</li><li>Solidity</li><li>Ganache</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-card-inner">
+                            <div>
+                                <div class="project-top">
+                                    <div class="folder"><i class="fas fa-folder-open"></i></div>
+                                    <div class="project-links">
+                                        <a href="https://github.com/ceoadlw/KeystrokeDynamics-Authentication" target="_blank" rel="noopener noreferrer" aria-label="GitHub Link"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                                <h3 class="project-title">Authentication Using Keystroke Dynamics</h3>
+                                <p class="project-description">
+                                    An advanced authentication system that captures and analyzes keystroke timing patterns. Features multiple detection algorithms for enhanced security verification.
+                                </p>
+                            </div>
+                            <div>
+                                <ul class="project-tech-list">
+                                    <li>Node.js</li><li>HTML/CSS</li><li>MongoDB</li><li>JavaScript</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-card-inner">
+                            <div>
+                                <div class="project-top">
+                                    <div class="folder"><i class="fas fa-folder-open"></i></div>
+                                    <div class="project-links">
+                                        {/* No links provided, maybe add placeholder? */}
+                                    </div>
+                                </div>
+                                <h3 class="project-title">Minimum Baseline Security System</h3>
+                                <p class="project-description">
+                                    Worked with Huawei Bangladesh to develop an updated iteration of a security system with automation scripts and nationwide deployment guidelines for Robi Axiata Ltd.
+                                </p>
+                            </div>
+                            <div>
+                                <ul class="project-tech-list">
+                                    <li>Python</li><li>Bash</li><li>Network Security</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Add more project cards */}
                 </div>
             </div>
         </section>
 
+        {/* Skills Section */}
         <section id="skills" class="skills">
             <div class="container">
                 <h2 class="section-title">My Toolkit</h2>
-
                 <div class="skills-container">
-                    {/* Skill categories ... */}
+                    {/* Skill Categories and Grids */}
                     <div class="skill-category">
-                         <h3>Programming Languages</h3>
-                         <div class="skill-grid">
-                             <div class="skill-item">
-                                 <i class="fab fa-java skill-icon"></i>
-                                 <span class="skill-name">Java</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-python skill-icon"></i>
-                                 <span class="skill-name">Python</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-code skill-icon"></i>
-                                 <span class="skill-name">C/C++</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-database skill-icon"></i>
-                                 <span class="skill-name">SQL</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-js-square skill-icon"></i>
-                                 <span class="skill-name">JavaScript</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-html5 skill-icon"></i>
-                                 <span class="skill-name">HTML/CSS</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-chart-bar skill-icon"></i>
-                                 <span class="skill-name">R</span>
-                             </div>
-                         </div>
-                     </div>
-
-                     <div class="skill-category">
-                         <h3>Frameworks & Libraries</h3>
-                         <div class="skill-grid">
-                             <div class="skill-item">
-                                 <i class="fab fa-react skill-icon"></i>
-                                 <span class="skill-name">React</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-node-js skill-icon"></i>
-                                 <span class="skill-name">Node.js</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-vial skill-icon"></i>
-                                 <span class="skill-name">JUnit</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-wordpress skill-icon"></i>
-                                 <span class="skill-name">WordPress</span>
-                             </div>
-                         </div>
-                     </div>
-
-                     <div class="skill-category">
-                         <h3>Platforms & Tools</h3>
-                         <div class="skill-grid">
-                             <div class="skill-item">
-                                 <i class="fab fa-microsoft skill-icon"></i>
-                                 <span class="skill-name">Office 365</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-google skill-icon"></i>
-                                 <span class="skill-name">GCP</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-windows skill-icon"></i>
-                                 <span class="skill-name">Azure</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-aws skill-icon"></i>
-                                 <span class="skill-name">AWS</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-terminal skill-icon"></i>
-                                 <span class="skill-name">Postman</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-gamepad skill-icon"></i>
-                                 <span class="skill-name">Gamemaker</span>
-                             </div>
-                         </div>
-                     </div>
-
-                     <div class="skill-category">
-                         <h3>Developer Tools</h3>
-                         <div class="skill-grid">
-                             <div class="skill-item">
-                                 <i class="fab fa-git-alt skill-icon"></i>
-                                 <span class="skill-name">Git</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fab fa-docker skill-icon"></i>
-                                 <span class="skill-name">Docker</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-code skill-icon"></i>
-                                 <span class="skill-name">VS Code</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-laptop-code skill-icon"></i>
-                                 <span class="skill-name">Visual Studio</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-terminal skill-icon"></i>
-                                 <span class="skill-name">PyCharm</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-coffee skill-icon"></i>
-                                 <span class="skill-name">IntelliJ</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-moon skill-icon"></i>
-                                 <span class="skill-name">Eclipse</span>
-                             </div>
-                             <div class="skill-item">
-                                 <i class="fas fa-file-code skill-icon"></i>
-                                 <span class="skill-name">LaTeX</span>
-                             </div>
-                         </div>
-                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="inventory" class="inventory">
-            <div class="container">
-                <h2 class="section-title">Digital Inventory</h2>
-                <div class="inventory-category">
-                   <h3>System Specifications</h3>
-                   <div class="inventory-grid">
-                        {/* Inventory items ... */}
-                       <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/case.jpg" alt="NZXT H7 Flow" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Case</span>
-                            <span class="inventory-specs">NZXT H7 Flow</span>
+                        <h3>Programming Languages</h3>
+                        <div class="skill-grid">
+                            <div class="skill-item"><i class="fab fa-java skill-icon"></i><span class="skill-name">Java</span></div>
+                            <div class="skill-item"><i class="fab fa-python skill-icon"></i><span class="skill-name">Python</span></div>
+                            <div class="skill-item"><i class="fas fa-code skill-icon"></i><span class="skill-name">C/C++</span></div>
+                            <div class="skill-item"><i class="fas fa-database skill-icon"></i><span class="skill-name">SQL</span></div>
+                            <div class="skill-item"><i class="fab fa-js-square skill-icon"></i><span class="skill-name">JavaScript</span></div>
+                            <div class="skill-item"><i class="fab fa-html5 skill-icon"></i><span class="skill-name">HTML/CSS</span></div>
+                            <div class="skill-item"><i class="fas fa-chart-bar skill-icon"></i><span class="skill-name">R</span></div>
                         </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/cpu.jpg" alt="AMD Ryzen 9800X3D" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">CPU</span>
-                            <span class="inventory-specs">AMD Ryzen 9800X3D</span>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Frameworks & Libraries</h3>
+                        <div class="skill-grid">
+                            <div class="skill-item"><i class="fab fa-react skill-icon"></i><span class="skill-name">React</span></div>
+                            <div class="skill-item"><i class="fab fa-node-js skill-icon"></i><span class="skill-name">Node.js</span></div>
+                            <div class="skill-item"><i class="fas fa-vial skill-icon"></i><span class="skill-name">JUnit</span></div>
+                            <div class="skill-item"><i class="fab fa-wordpress skill-icon"></i><span class="skill-name">WordPress</span></div>
                         </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/cooler.jpg" alt="Thermalright Phantom Spirit EVO 120" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">CPU Cooler</span>
-                            <span class="inventory-specs">Thermalright Phantom Spirit EVO 120</span>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Platforms & Tools</h3>
+                        <div class="skill-grid">
+                            <div class="skill-item"><i class="fab fa-microsoft skill-icon"></i><span class="skill-name">Office 365</span></div>
+                            <div class="skill-item"><i class="fab fa-google skill-icon"></i><span class="skill-name">GCP</span></div>
+                            <div class="skill-item"><i class="fab fa-windows skill-icon"></i><span class="skill-name">Azure</span></div>
+                            <div class="skill-item"><i class="fab fa-aws skill-icon"></i><span class="skill-name">AWS</span></div>
+                            <div class="skill-item"><i class="fas fa-terminal skill-icon"></i><span class="skill-name">Postman</span></div>
+                            <div class="skill-item"><i class="fas fa-gamepad skill-icon"></i><span class="skill-name">Gamemaker</span></div>
                         </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/gpu.jpg" alt="Asus TUF 9070 XT OC Edition" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">GPU</span>
-                            <span class="inventory-specs">Asus TUF 9070 XT OC Edition</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/headset.jpg" alt="HyperX Stinger 2 Wireless" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Headset</span>
-                            <span class="inventory-specs">HyperX Stinger 2 Wireless</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/keyboard.jpg" alt="Keychron Q5 HE" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Keyboard</span>
-                            <span class="inventory-specs">Keychron Q5 HE</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/monitor.jpg" alt="Asus ROG Strix XG27AQDMG" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Monitor</span>
-                            <span class="inventory-specs">Asus ROG Strix XG27AQDMG</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/motherboard.jpg" alt="ASRock X870E Taichi Lite" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Motherboard</span>
-                            <span class="inventory-specs">ASRock X870E Taichi Lite</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/mouse.jpg" alt="Logitech G502 X Lightspeed Plus" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Mouse</span>
-                            <span class="inventory-specs">Logitech G502 X Lightspeed Plus</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/psu.jpg" alt="Super Flower Leadex VII Gold 1300W" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">PSU</span>
-                            <span class="inventory-specs">Super Flower Leadex VII Gold 1300W</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/ram.jpg" alt="Team Group T-Force Delta RGB DDR5" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">RAM</span>
-                            <span class="inventory-specs">Team Group T-Force Delta RGB DDR5 32GB</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/ssd.jpg" alt="WD SN850X 4TB" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">SSD</span>
-                            <span class="inventory-specs">WD SN850X 4TB</span>
-                        </div>
-                   </div>
-                </div>
-                 <div class="inventory-category">
-                    <h3>Additional Hardware</h3>
-                    <div class="inventory-grid">
-                       <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/controller.jpg" alt="GuliKit KK3 MAX" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Controller</span>
-                            <span class="inventory-specs">GuliKit KK3 MAX</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/shifter.jpg" alt="Logitech DE9 for G Series" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Driving Force Shifter</span>
-                            <span class="inventory-specs">DE9 for G Series</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/handheld.jpg" alt="Asus ROG Ally X" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Handheld</span>
-                            <span class="inventory-specs">Asus ROG Ally X</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/laptop.jpg" alt="Asus ROG GL502VS-GZ360" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Laptop</span>
-                            <span class="inventory-specs">Asus ROG GL502VS-GZ360</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/wheel.jpg" alt="Logitech G923" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Racing Wheel and Pedals</span>
-                            <span class="inventory-specs">Logitech G923</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/smartphone.jpg" alt="Samsung Galaxy S23 Ultra" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Smartphone</span>
-                            <span class="inventory-specs">Samsung Galaxy S23 Ultra</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/tablet.jpg" alt="Samsung Galaxy Tab S9" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">Tablet</span>
-                            <span class="inventory-specs">Samsung Galaxy Tab S9</span>
-                        </div>
-
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/vr.jpg" alt="Meta Quest 3" class="lazy-image" loading="lazy"/>
-                            </div>
-                            <span class="inventory-name">VR Headset</span>
-                            <span class="inventory-specs">Meta Quest 3</span>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Developer Tools</h3>
+                        <div class="skill-grid">
+                            <div class="skill-item"><i class="fab fa-git-alt skill-icon"></i><span class="skill-name">Git</span></div>
+                            <div class="skill-item"><i class="fab fa-docker skill-icon"></i><span class="skill-name">Docker</span></div>
+                            <div class="skill-item"><i class="fas fa-code skill-icon"></i><span class="skill-name">VS Code</span></div>
+                            <div class="skill-item"><i class="fas fa-laptop-code skill-icon"></i><span class="skill-name">Visual Studio</span></div>
+                            <div class="skill-item"><i class="fas fa-terminal skill-icon"></i><span class="skill-name">PyCharm</span></div>
+                            <div class="skill-item"><i class="fas fa-coffee skill-icon"></i><span class="skill-name">IntelliJ</span></div>
+                            <div class="skill-item"><i class="fas fa-moon skill-icon"></i><span class="skill-name">Eclipse</span></div>
+                            <div class="skill-item"><i class="fas fa-file-code skill-icon"></i><span class="skill-name">LaTeX</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        {/* Inventory Section */}
+        <section id="inventory" class="inventory">
+            <div class="container">
+                <h2 class="section-title">Digital Inventory</h2>
+                <div class="inventory-category">
+                    <h3>System Specifications</h3>
+                    <div class="inventory-grid">
+                        {/* Inventory Items - Ensure image paths are correct */}
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/case.jpg" alt="NZXT H7 Flow" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Case</span><span class="inventory-specs">NZXT H7 Flow</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/cpu.jpg" alt="AMD Ryzen 9800X3D" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">CPU</span><span class="inventory-specs">AMD Ryzen 9800X3D</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/cooler.jpg" alt="Thermalright Phantom Spirit EVO 120" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">CPU Cooler</span><span class="inventory-specs">Thermalright Phantom Spirit EVO 120</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/gpu.jpg" alt="Asus TUF 9070 XT OC Edition" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">GPU</span><span class="inventory-specs">Asus TUF 9070 XT OC Edition</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/headset.jpg" alt="HyperX Stinger 2 Wireless" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Headset</span><span class="inventory-specs">HyperX Stinger 2 Wireless</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/keyboard.jpg" alt="Keychron Q5 HE" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Keyboard</span><span class="inventory-specs">Keychron Q5 HE</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/monitor.jpg" alt="Asus ROG Strix XG27AQDMG" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Monitor</span><span class="inventory-specs">Asus ROG Strix XG27AQDMG</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/motherboard.jpg" alt="ASRock X870E Taichi Lite" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Motherboard</span><span class="inventory-specs">ASRock X870E Taichi Lite</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/mouse.jpg" alt="Logitech G502 X Lightspeed Plus" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Mouse</span><span class="inventory-specs">Logitech G502 X Lightspeed Plus</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/psu.jpg" alt="Super Flower Leadex VII Gold 1300W" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">PSU</span><span class="inventory-specs">Super Flower Leadex VII Gold 1300W</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/ram.jpg" alt="Team Group T-Force Delta RGB DDR5" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">RAM</span><span class="inventory-specs">Team Group T-Force Delta RGB DDR5 32GB</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/ssd.jpg" alt="WD SN850X 4TB" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">SSD</span><span class="inventory-specs">WD SN850X 4TB</span></div></div>
+                    </div>
+                </div>
+                <div class="inventory-category">
+                    <h3>Additional Hardware</h3>
+                    <div class="inventory-grid">
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/controller.jpg" alt="GuliKit KK3 MAX" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Controller</span><span class="inventory-specs">GuliKit KK3 MAX</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/shifter.jpg" alt="Logitech DE9 for G Series" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Driving Force Shifter</span><span class="inventory-specs">DE9 for G Series</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/handheld.jpg" alt="Asus ROG Ally X" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Handheld</span><span class="inventory-specs">Asus ROG Ally X</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/laptop.jpg" alt="Asus ROG GL502VS-GZ360" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Laptop</span><span class="inventory-specs">Asus ROG GL502VS-GZ360</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/wheel.jpg" alt="Logitech G923" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Racing Wheel and Pedals</span><span class="inventory-specs">Logitech G923</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/smartphone.jpg" alt="Samsung Galaxy S23 Ultra" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Smartphone</span><span class="inventory-specs">Samsung Galaxy S23 Ultra</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/tablet.jpg" alt="Samsung Galaxy Tab S9" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">Tablet</span><span class="inventory-specs">Samsung Galaxy Tab S9</span></div></div>
+                        <div class="inventory-item"><div class="inventory-image"><img src="images/vr.jpg" alt="Meta Quest 3" class="lazy-image" loading="lazy"/></div><div class="inventory-content"><span class="inventory-name">VR Headset</span><span class="inventory-specs">Meta Quest 3</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/* Contact Section */}
         <section id="contact" class="contact">
             <div class="container">
-                <h2 class="glitch-effect" data-text="Get In Touch">Get In Touch</h2>
+                {/* Re-structured title for better semantics and styling */}
+                <h2 class="section-title">
+                   <span class="contact-title-text glitch-effect" data-text="Get In Touch">Get In Touch</span>
+                </h2>
                 <p>
                     I'm currently looking for new opportunities in the field of information security. Whether you have a question or just want to say hi, I'll do my best to get back to you!
                 </p>
@@ -898,11 +2082,12 @@
 
     <footer>
         <div class="container">
-            <p>Designed & Built by Adrijeet Deb | 2025</p>
+            <p>Designed & Built by <a href="https://www.linkedin.com/in/adrijeetdeb/" target="_blank" rel="noopener noreferrer">Adrijeet Deb</a> | 2025</p>
         </div>
     </footer>
 
-    <a href="#home" class="back-to-top"> {/* Ensure this points to #home */}
+    {/* Back to Top Link */}
+    <a href="#home" class="back-to-top" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </a>
 
@@ -910,200 +2095,82 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize particles.js (Your existing config)
-             particlesJS("particles-js", { /* ... your particles config ... */
-                "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ff3366" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } }, "opacity": { "value": 0.3, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ff3366", "opacity": 0.2, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.8 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true
-            });
 
-            // Hamburger menu toggle
+            // --- Global Elements ---
+            const body = document.body;
+            const header = document.querySelector('header');
             const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('nav ul');
-            const body = document.querySelector('body');
+            const navMenu = document.getElementById('nav-menu'); // Use ID for menu UL
             const menuOverlay = document.querySelector('.menu-overlay');
-            const navLinks = document.querySelectorAll('nav ul li a'); // Get nav links
+            const navLinks = navMenu.querySelectorAll('a[href^="#"]'); // Links within the menu
+            const backToTopBtn = document.querySelector('.back-to-top');
+            const matrixCanvas = document.getElementById('matrix-rain');
+            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            const openMenu = () => {
-                hamburger.classList.add('active');
-                navMenu.classList.add('active');
-                menuOverlay.classList.add('active');
-                body.style.overflow = 'hidden'; // Prevent background scroll
-            };
 
-            const closeMenu = () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                body.style.overflow = ''; // Restore scroll
-            };
+            // --- State ---
+            let isMenuOpen = false;
 
-            hamburger.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    closeMenu();
+
+            // --- Functions ---
+
+            // Particles.js Initialization
+            const initParticles = () => {
+                if (typeof particlesJS !== 'undefined') {
+                    particlesJS("particles-js", { /* --- PASTE YOUR particles.js CONFIG HERE --- */
+                       "particles": { "number": { "value": 60, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ff3366" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } }, "opacity": { "value": 0.3, "random": true, "anim": { "enable": true, "speed": 0.5, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ff3366", "opacity": 0.2, "width": 1 }, "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": true
+                    });
                 } else {
-                    openMenu();
+                    console.warn('particles.js library not found.');
                 }
-            });
-
-            // Close menu when a link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener('click', closeMenu);
-            });
-
-            // Close menu when overlay is clicked
-            menuOverlay.addEventListener('click', closeMenu);
-
-
-            // Intersection Observer for animations (Your existing setup)
-             const setupIntersectionObserver = () => {
-                 if ('IntersectionObserver' in window) {
-                    const observeTargets = (selector, className, threshold = 0.1, delayIncrement = 0) => {
-                         const observer = new IntersectionObserver((entries) => {
-                             entries.forEach((entry, index) => {
-                                 if (entry.isIntersecting) {
-                                     setTimeout(() => {
-                                         entry.target.classList.add(className);
-                                     }, index * delayIncrement);
-                                     observer.unobserve(entry.target); // Unobserve after animating
-                                 }
-                             });
-                         }, { threshold: threshold });
-
-                         document.querySelectorAll(selector).forEach(item => {
-                             observer.observe(item);
-                         });
-                     }
-
-                     // Add 'visible' class for general fade-in/slide-up
-                     observeTargets('.timeline-item', 'visible', 0.1);
-                     observeTargets('.project-card', 'visible', 0.1, 100); // Stagger projects
-                     observeTargets('.skill-item', 'visible', 0.1, 30);   // Stagger skills
-                     observeTargets('.inventory-item', 'visible', 0.1, 50); // Stagger inventory
-
-                     // Observe profile image for lazy animation
-                     const imageObserver = new IntersectionObserver((entries, observer) => {
-                         entries.forEach(entry => {
-                             if (entry.isIntersecting) {
-                                 const img = entry.target;
-                                 img.style.animation = 'fadeInImg 0.8s ease-in forwards'; // Add forwards
-                                 observer.unobserve(img);
-                             }
-                         });
-                     }, { threshold: 0.1 }); // Trigger slightly before fully visible
-
-                     document.querySelectorAll('img.profile-image').forEach(img => {
-                         imageObserver.observe(img);
-                     });
-
-                 } else {
-                     // Basic fallback for older browsers (immediately add class)
-                     document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
-                         item.classList.add('visible');
-                     });
-                     document.querySelectorAll('img.profile-image').forEach(img => {
-                         img.style.opacity = 1; // Just make visible
-                     });
-                 }
-             };
-
-
-            // Header scroll effect & Back-to-top button
-            const handleScrollEffects = () => {
-                const backToTop = document.querySelector('.back-to-top');
-                const header = document.querySelector('header');
-                let lastScrollY = window.scrollY; // For potential header hide/show on scroll
-
-                const scrollHandler = () => {
-                    const currentScrollY = window.scrollY;
-                    // Header scrolled class
-                    if (currentScrollY > 50) { // Add scrolled class earlier
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-
-                    // Back-to-top visibility
-                    if (currentScrollY > 300) {
-                        backToTop.classList.add('visible');
-                    } else {
-                        backToTop.classList.remove('visible');
-                    }
-
-                    lastScrollY = currentScrollY; // Update last scroll position
-                };
-
-                window.addEventListener('scroll', scrollHandler, { passive: true }); // Use passive listener
-                scrollHandler(); // Initial check
-
-                 // Smooth scroll for back to top (using native behavior if possible)
-                 // The `scroll-behavior: smooth;` in CSS handles this for `a[href="#"]`
-                 // If more complex logic is needed, uncomment below:
-                 /*
-                 backToTop.addEventListener('click', function(e) {
-                     e.preventDefault();
-                     window.scrollTo({
-                         top: 0,
-                         behavior: 'smooth'
-                     });
-                 });
-                 */
             };
 
-            // Matrix rain effect (Your existing setup - ensure it's optimized)
-            const optimizeMatrixRain = () => {
-                const canvas = document.getElementById('matrix-rain');
-                 if (!canvas) return; // Exit if canvas not found
-                const ctx = canvas.getContext('2d');
+            // Matrix Rain Effect
+            const initMatrixRain = () => {
+                if (!matrixCanvas || reducedMotionQuery.matches) {
+                    if (matrixCanvas) matrixCanvas.style.display = 'none';
+                    return; // Exit if canvas not found or reduced motion
+                }
+
+                const ctx = matrixCanvas.getContext('2d');
                 let animationFrameId;
-
-                const resizeCanvas = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
-
-                resizeCanvas(); // Initial size
-
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        resizeCanvas();
-                        // Reset drops if needed after resize
-                        setupDrops(); // Re-initialize drops array
-                    }, 150); // Debounce resize event
-                });
-
+                let columns, drops, fontSize;
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|;:,.<>?';
                 const charArray = characters.split('');
-                let fontSize, columns, drops;
+
+                const resizeCanvas = () => {
+                    matrixCanvas.width = window.innerWidth;
+                    matrixCanvas.height = window.innerHeight;
+                    setupDrops(); // Re-calculate drops on resize
+                };
 
                 const setupDrops = () => {
                     const isMobile = window.innerWidth < 768;
                     fontSize = isMobile ? 10 : 12;
-                    const density = isMobile ? 2 : 1;
-                    columns = Math.floor(canvas.width / (fontSize * density));
+                    const density = isMobile ? 2 : 1; // Fewer columns on mobile
+                    columns = Math.max(1, Math.floor(matrixCanvas.width / (fontSize * density))); // Ensure at least 1 column
                     drops = [];
                     for (let i = 0; i < columns; i++) {
-                        drops[i] = Math.random() * canvas.height / fontSize; // Random start position
+                        drops[i] = Math.random() * matrixCanvas.height / fontSize; // Random start
                     }
-                }
-                setupDrops(); // Initial setup
+                };
 
                 function drawMatrix() {
                     ctx.fillStyle = 'rgba(10, 25, 47, 0.05)'; // Trail effect
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 
                     ctx.fillStyle = '#ff3366'; // Matrix color
                     ctx.font = `${fontSize}px monospace`;
 
+                    const density = window.innerWidth < 768 ? 2 : 1;
                     for (let i = 0; i < drops.length; i++) {
                         const text = charArray[Math.floor(Math.random() * charArray.length)];
-                        const xPos = i * fontSize * (window.innerWidth < 768 ? 2 : 1); // Adjust density dynamically
+                        const xPos = i * fontSize * density;
                         const yPos = drops[i] * fontSize;
                         ctx.fillText(text, xPos, yPos);
 
-                        // Reset drop randomly or if it goes off screen
-                        if (yPos > canvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
+                        if (yPos > matrixCanvas.height && Math.random() > 0.975) {
+                            drops[i] = 0; // Reset drop
                         }
                         drops[i]++;
                     }
@@ -1114,84 +2181,179 @@
                     animationFrameId = requestAnimationFrame(animateMatrix);
                 }
 
-                // Start animation only if not preferring reduced motion
-                 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-                 if (!reducedMotionQuery.matches) {
-                     animateMatrix(); // Start the loop
-                 } else {
-                      canvas.style.display = 'none'; // Hide canvas if reduced motion
-                 }
+                // Initial setup and start
+                resizeCanvas(); // Includes setupDrops()
+                animateMatrix();
 
+                // Debounced resize handler
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(resizeCanvas, 150);
+                });
 
                 // Pause/resume on visibility change
                 document.addEventListener('visibilitychange', () => {
-                    if (!reducedMotionQuery.matches) { // Only manage animation if it's running
-                        if (document.hidden) {
-                            cancelAnimationFrame(animationFrameId);
-                        } else {
-                            animateMatrix(); // Resume
-                        }
+                    if (document.hidden) {
+                        cancelAnimationFrame(animationFrameId);
+                    } else if (!reducedMotionQuery.matches) { // Only resume if not reduced motion
+                        animateMatrix();
                     }
                 });
             };
 
-            // Smooth scroll for internal links (using CSS scroll-margin-top)
-             const smoothScrollInit = () => {
-                // Add click listener mainly for closing menu (already done above)
-                // CSS `scroll-behavior: smooth` and `scroll-margin-top` handles the rest
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        const targetId = this.getAttribute('href');
-                        // Check if it's a valid internal link
-                        if (targetId.length > 1 && targetId.startsWith('#')) {
-                            const targetElement = document.querySelector(targetId);
-                            if (targetElement) {
-                                // Let default behavior happen if CSS scroll-behavior is set
-                                // If manual scroll is needed (e.g., JS calculation) do it here:
-                                // e.preventDefault();
-                                // const headerOffset = document.querySelector('header').offsetHeight;
-                                // const elementPosition = targetElement.getBoundingClientRect().top;
-                                // const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                                // window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
 
-                                // Since closeMenu is already attached, we just let the browser handle scroll
-                            }
+            // Mobile Menu Toggle
+            const toggleMenu = () => {
+                isMenuOpen = !isMenuOpen;
+                hamburger.classList.toggle('active', isMenuOpen);
+                navMenu.classList.toggle('active', isMenuOpen);
+                menuOverlay.classList.toggle('active', isMenuOpen);
+                body.classList.toggle('menu-open', isMenuOpen); // Toggle body class for scroll lock
+                hamburger.setAttribute('aria-expanded', isMenuOpen); // ARIA attribute
+            };
+
+            // Close Menu Function
+            const closeMenu = () => {
+                if (isMenuOpen) {
+                    toggleMenu();
+                }
+            };
+
+
+            // Smooth Scrolling & Header Offset (Handled by CSS scroll-margin-top)
+            // JS only needs to close the menu on link click
+            const handleNavLinkClick = (event) => {
+                 // Check if the link is an internal hash link
+                 if (event.currentTarget.pathname === window.location.pathname && event.currentTarget.hash) {
+                     // Find the target element
+                     const targetElement = document.querySelector(event.currentTarget.hash);
+                     if (targetElement) {
+                          closeMenu(); // Close the menu first
+                          // Let the browser handle the smooth scroll via CSS `scroll-behavior` and `scroll-margin-top`
+                          // Optional: If focus management is needed after scroll:
+                          // targetElement.focus(); // Consider accessibility implications
+                     }
+                 } else {
+                      closeMenu(); // Close menu even for external links
+                 }
+            };
+
+
+            // Scroll Effects (Header styling, Back-to-Top visibility)
+            const handleScrollEffects = () => {
+                const scrollThreshold = 50; // Pixels scrolled to trigger header change
+                const backToTopThreshold = 300; // Pixels scrolled to show back-to-top
+
+                const currentScrollY = window.scrollY;
+
+                // Header Scrolled State
+                header.classList.toggle('scrolled', currentScrollY > scrollThreshold);
+
+                // Back-to-Top Button Visibility
+                if (backToTopBtn) {
+                    backToTopBtn.classList.toggle('visible', currentScrollY > backToTopThreshold);
+                }
+            };
+
+
+            // Intersection Observer for Animations
+            const setupIntersectionObserver = () => {
+                if (!('IntersectionObserver' in window) || reducedMotionQuery.matches) {
+                    // Fallback or if reduced motion: Make all elements visible immediately
+                    document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item, .about-image img.profile-image').forEach(el => {
+                        el.classList.add('visible'); // Add visible class directly
+                         // Ensure images are not stuck at opacity 0
+                         if (el.tagName === 'IMG') el.style.opacity = 1;
+                    });
+                    return; // Don't set up observers
+                }
+
+                const observerOptions = {
+                    root: null, // Use viewport
+                    rootMargin: '0px',
+                    threshold: 0.1 // Trigger when 10% visible
+                };
+
+                const animationCallback = (entries, observer) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            const element = entry.target;
+                            // Apply delay based on element type or data attribute if needed
+                            let delay = 0;
+                            if (element.classList.contains('project-card')) delay = index * 100;
+                            else if (element.classList.contains('skill-item')) delay = index * 50;
+                            else if (element.classList.contains('inventory-item')) delay = index * 70;
+                            else if (element.classList.contains('profile-image')) delay = 100; // Small delay for image fade
+
+                            setTimeout(() => {
+                                element.classList.add('visible');
+                            }, delay);
+
+                            observer.unobserve(element); // Stop observing once animated
                         }
                     });
+                };
+
+                const observer = new IntersectionObserver(animationCallback, observerOptions);
+
+                // Observe all target elements
+                document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item, .about-image img.profile-image').forEach(el => {
+                    observer.observe(el);
                 });
             };
 
 
-            // Initialize all functionalities
+            // --- Event Listeners ---
+
+            // Hamburger Click
+            if (hamburger && navMenu && menuOverlay) {
+                 hamburger.addEventListener('click', toggleMenu);
+                 menuOverlay.addEventListener('click', closeMenu); // Close on overlay click
+            } else {
+                 console.warn('Hamburger, Nav Menu, or Menu Overlay not found.');
+            }
+
+
+            // Navigation Link Clicks (inside mobile menu)
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavLinkClick);
+            });
+
+            // Window Scroll Listener (Throttle for performance)
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(handleScrollEffects, 50); // Adjust throttle delay if needed
+            }, { passive: true }); // Use passive listener
+
+             // Reduced Motion Listener (Optional: Re-evaluate on change)
+             reducedMotionQuery.addEventListener('change', () => {
+                 // You might want to re-initialize or disable features if the preference changes
+                 // For simplicity, this example mainly checks on load.
+                 console.log(`Prefers Reduced Motion: ${reducedMotionQuery.matches}`);
+                 // Example: Re-initialize matrix rain if motion is re-enabled
+                 if (!reducedMotionQuery.matches) {
+                     initMatrixRain(); // Check if it needs restarting
+                 } else {
+                      // Stop matrix rain if running
+                     if (matrixCanvas) matrixCanvas.style.display = 'none';
+                      // Potentially cancel existing animation frame requests
+                 }
+             });
+
+
+            // --- Initializations ---
+            initParticles();
+            initMatrixRain();
+            handleScrollEffects(); // Initial check on load
             setupIntersectionObserver();
-            handleScrollEffects();
-            optimizeMatrixRain();
-            smoothScrollInit(); // Still useful for potential future JS scroll needs
 
-            // Add touch support class
+            // Add touch support class if applicable
             if ('ontouchstart' in window || navigator.maxTouchPoints) {
-                document.body.classList.add('touch-device');
+                body.classList.add('touch-device');
             }
 
-            // Apply reduced motion class immediately if needed
-            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            if (reducedMotionQuery.matches) {
-                document.body.classList.add('reduced-motion');
-                 // Optionally add styles via JS if needed, though CSS is preferred
-                 /*
-                 const styleEl = document.createElement('style');
-                 styleEl.textContent = `
-                     .reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
-                          animation-duration: 0.01ms !important;
-                          animation-iteration-count: 1 !important;
-                          transition-duration: 0.01ms !important;
-                          scroll-behavior: auto !important;
-                      }
-                      /* Add other reduced motion overrides */
-                 `;
-                 document.head.appendChild(styleEl);
-                 */
-            }
         });
     </script>
 
