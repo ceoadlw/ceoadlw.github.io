@@ -75,8 +75,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative; /* Add this for relative positioning */
-            width: 100%; /* Ensure full width */
+            position: relative;
+            width: 100%;
         }
 
         .logo {
@@ -86,10 +86,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-family: var(--font-code);
-        }
-
-        .logo span {
-            color: var(--text-primary);
         }
 
         nav ul {
@@ -126,24 +122,47 @@
             counter-reset: item;
         }
 
-        /* Improved hamburger menu styles */
+        /* Simplified hamburger menu styles */
         .hamburger {
             display: none;
             cursor: pointer;
-            z-index: 1001; /* Increased from 999 to be above overlay */
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
+            width: 30px;
+            height: 21px;
+            position: relative;
+            z-index: 101;
         }
 
         .hamburger .line {
-            width: 25px;
+            width: 100%;
             height: 3px;
-            background: var(--accent-gradient);
-            margin: 5px;
-            border-radius: 3px;
+            background-color: var(--accent);
+            position: absolute;
+            left: 0;
             transition: all 0.3s ease;
+        }
+
+        .hamburger .line:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger .line:nth-child(2) {
+            top: 9px;
+        }
+
+        .hamburger .line:nth-child(3) {
+            top: 18px;
+        }
+
+        .hamburger.active .line:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .line:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
         }
 
         section {
@@ -288,7 +307,6 @@
             line-height: 20px;
         }
 
-        /* Improved about image styling for your actual photo */
         .about-image {
             position: relative;
             max-width: 300px;
@@ -735,28 +753,6 @@
             color: var(--text-secondary);
         }
 
-        /* Responsive Styles for Inventory */
-        @media screen and (max-width: 768px) {
-            .inventory-grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .inventory-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-            
-            .inventory-name {
-                font-size: 0.9rem;
-            }
-            
-            .inventory-specs {
-                font-size: 0.8rem;
-            }
-        }
-
         .contact {
             text-align: center;
             max-width: 600px;
@@ -874,88 +870,37 @@
         
         /* Responsive Styles */
         @media screen and (max-width: 768px) {
+            /* Simplified mobile menu styles */
             .hamburger {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                width: 30px;
-                height: 25px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 0;
-                z-index: 1001;
-                position: absolute; /* Keep absolute positioning */
-                right: 20px; /* Fixed distance from right */
-                top: 50%; /* Still centered vertically */
-                transform: translateY(-50%); /* Keep vertical centering */
-            }
-            
-            .hamburger .line {
-                width: 30px;
-                height: 3px;
-                background: var(--accent-gradient);
-                border-radius: 10px;
-                transition: all 0.3s ease;
-                margin: 0;
-            }
-            
-            .hamburger.active .line:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-            
-            .hamburger.active .line:nth-child(2) {
-                opacity: 0;
-            }
-            
-            .hamburger.active .line:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
             }
             
             nav ul {
                 position: fixed;
-                right: -100%;
                 top: 0;
+                right: -100%;
+                width: 250px;
                 height: 100vh;
-                width: 75%;
-                max-width: 300px;
                 background-color: var(--secondary);
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-                padding: 80px 0 50px;
-                box-shadow: -10px 0px 30px -15px rgba(2, 12, 27, 0.7);
-                z-index: 1000; /* Increased to be above overlay but below hamburger */
+                transition: right 0.3s ease;
+                z-index: 100;
+                padding: 50px 0;
             }
             
             nav ul.active {
                 right: 0;
+                box-shadow: -10px 0px 30px -15px rgba(2, 12, 27, 0.7);
             }
             
             nav ul li {
-                margin: 1.5rem 0;
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.3s ease;
-                transition-delay: 0.1s;
-            }
-            
-            nav ul.active li {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            
-            nav ul.active li:nth-child(1) { transition-delay: 0.1s; }
-            nav ul.active li:nth-child(2) { transition-delay: 0.2s; }
-            nav ul.active li:nth-child(3) { transition-delay: 0.3s; }
-            nav ul.active li:nth-child(4) { transition-delay: 0.4s; }
-            nav ul.active li:nth-child(5) { transition-delay: 0.5s; }
-            
-            nav ul li a {
-                display: inline-block;
-                font-size: 1rem;
-                padding: 10px;
+                margin: 15px 0;
             }
             
             .hero h1 {
@@ -980,7 +925,6 @@
                 margin: 50px auto 0;
             }
             
-            /* Enhanced responsiveness for profile image */
             .about-image::after {
                 top: 10px;
                 left: 10px;
@@ -1034,16 +978,27 @@
                 width: 40px;
                 height: 40px;
             }
+            
+            /* Menu overlay */
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(10, 15, 23, 0.7);
+                z-index: 99;
+                display: none;
+            }
+            
+            .menu-overlay.active {
+                display: block;
+            }
         }
 
         @media screen and (max-width: 600px) {
             .skill-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            
-            /* Adjust hamburger position for smaller screens */
-            .hamburger {
-                right: 15px; /* Closer to edge on very small screens */
             }
         }
 
@@ -1096,7 +1051,6 @@
                 left: 8px;
             }
             
-            /* Profile image improvements for very small screens */
             .about-image img.profile-image {
                 border-radius: 4px;
             }
@@ -1151,15 +1105,15 @@
                 opacity: 0.03;
             }
             
-            /* Further adjust hamburger position */
-            .hamburger {
-                right: 10px;
-                top: 50%;
-            }
-            
             /* Ensure nav container has proper padding for small screens */
             .nav-container {
                 padding: 0 15px;
+            }
+            
+            /* Inventory grid for small screens */
+            .inventory-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
             }
         }
 
@@ -1168,27 +1122,12 @@
                 grid-template-columns: 1fr;
             }
             
-            nav ul {
-                width: 85%;
-            }
-            
             .logo {
                 font-size: 1.3rem;
             }
             
             .nav-container {
                 padding: 0 10px;
-            }
-            
-            /* Make hamburger slightly smaller on very small screens */
-            .hamburger {
-                width: 25px;
-                height: 20px;
-            }
-            
-            .hamburger .line {
-                width: 25px;
-                height: 2px;
             }
         }
 
@@ -1298,52 +1237,6 @@
             display: inline-block;
         }
         
-        .glitch-effect::before,
-        .glitch-effect::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        
-        .glitch-effect::before {
-            color: #0ff;
-            z-index: -1;
-            animation: glitch-effect 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            animation-delay: 0.1s;
-        }
-        
-        .glitch-effect::after {
-            color: #f0f;
-            z-index: -2;
-            animation: glitch-effect 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            animation-delay: 0.2s;
-        }
-        
-        @keyframes glitch-effect {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-3px, 3px);
-            }
-            40% {
-                transform: translate(-3px, -3px);
-            }
-            60% {
-                transform: translate(3px, 3px);
-            }
-            80% {
-                transform: translate(3px, -3px);
-            }
-            100% {
-                transform: translate(0);
-            }
-        }
-        
         .cyber-btn {
             position: relative;
             display: inline-flex;
@@ -1372,81 +1265,6 @@
         .cyber-btn span {
             position: absolute;
             display: block;
-        }
-        
-        .cyber-btn span:nth-child(1) {
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-secondary));
-            animation: btn-anim1 1s linear infinite;
-        }
-        
-        @keyframes btn-anim1 {
-            0% {
-                left: -100%;
-            }
-            50%, 100% {
-                left: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(2) {
-            top: -100%;
-            right: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, var(--accent-secondary));
-            animation: btn-anim2 1s linear infinite;
-            animation-delay: 0.25s;
-        }
-        
-        @keyframes btn-anim2 {
-            0% {
-                top: -100%;
-            }
-            50%, 100% {
-                top: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(3) {
-            bottom: 0;
-            right: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(270deg, transparent, var(--accent-secondary));
-            animation: btn-anim3 1s linear infinite;
-            animation-delay: 0.5s;
-        }
-        
-        @keyframes btn-anim3 {
-            0% {
-                right: -100%;
-            }
-            50%, 100% {
-                right: 100%;
-            }
-        }
-        
-        .cyber-btn span:nth-child(4) {
-            bottom: -100%;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(360deg, transparent, var(--accent-secondary));
-            animation: btn-anim4 1s linear infinite;
-            animation-delay: 0.75s;
-        }
-        
-        @keyframes btn-anim4 {
-            0% {
-                bottom: -100%;
-            }
-            50%, 100% {
-                bottom: 100%;
-            }
         }
         
         /* Matrix rain effect */
@@ -1484,81 +1302,6 @@
         .security-badge i {
             margin-right: 5px;
         }
-        
-        /* Menu overlay for mobile */
-        .menu-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 15, 23, 0.7);
-            backdrop-filter: blur(3px);
-            z-index: 990; /* This is correct */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none; /* Add this line to make overlay not capture clicks by default */
-        }
-        
-        .menu-overlay.active {
-            display: block;
-            opacity: 1;
-            pointer-events: auto; /* When active, capture clicks */
-        }
-        
-        /* Lazy loading animation for images */
-        @keyframes fadeInImg {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .lazy-image {
-            animation: fadeInImg 0.5s ease-in;
-        }
-        
-        /* Styles for touch devices */
-        .touch-device .project-card:hover,
-        .touch-device .skill-item:hover,
-        .touch-device .timeline-content:hover {
-            transform: none;
-        }
-        
-        .touch-device .skill-item:active,
-        .touch-device .project-card:active,
-        .touch-device .timeline-content:active {
-            transform: translateY(-5px);
-        }
-        
-        /* Reduced motion preferences */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-            
-            .animate-in, .project-card, .timeline-item, .skill-item {
-                animation: none !important;
-                opacity: 1 !important;
-                transform: none !important;
-                transition: none !important;
-            }
-            
-            .typing-effect {
-                animation: none !important;
-                border-right: none !important;
-            }
-            
-            #particles-js canvas {
-                opacity: 0.3 !important;
-            }
-            
-            #matrix-rain {
-                display: none !important;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1566,7 +1309,7 @@
     
     <canvas id="matrix-rain" class="matrix-bg"></canvas>
     
-    <!-- Menu overlay for mobile -->
+    <!-- Simplified menu overlay for mobile -->
     <div class="menu-overlay"></div>
     
     <header>
@@ -1999,61 +1742,12 @@
                             <span class="inventory-name">Keyboard</span>
                             <span class="inventory-specs">Keychron Q5 HE</span>
                         </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/monitor.png" alt="Asus ROG Strix XG27AQDMG" />
-                            </div>
-                            <span class="inventory-name">Monitor</span>
-                            <span class="inventory-specs">Asus ROG Strix XG27AQDMG</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/motherboard.png" alt="ASRock X870E Taichi Lite" />
-                            </div>
-                            <span class="inventory-name">Motherboard</span>
-                            <span class="inventory-specs">ASRock X870E Taichi Lite</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/mouse.png" alt="Logitech G502 X Lightspeed Plus" />
-                            </div>
-                            <span class="inventory-name">Mouse</span>
-                            <span class="inventory-specs">Logitech G502 X Lightspeed Plus</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/psu.png" alt="Super Flower Leadex VII Gold 1300W" />
-                            </div>
-                            <span class="inventory-name">PSU</span>
-                            <span class="inventory-specs">Super Flower Leadex VII Gold 1300W</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/ram.png" alt="Team Group T-Force Delta RGB DDR5" />
-                            </div>
-                            <span class="inventory-name">RAM</span>
-                            <span class="inventory-specs">Team Group T-Force Delta RGB DDR5 32GB</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/ssd.png" alt="WD SN850X 4TB" />
-                            </div>
-                            <span class="inventory-name">SSD</span>
-                            <span class="inventory-specs">WD SN850X 4TB</span>
-                        </div>
                     </div>
                 </div>
                 
                 <div class="inventory-category">
                     <h3>Additional Hardware</h3>
                     <div class="inventory-grid">
-
                         <div class="inventory-item">
                             <div class="inventory-image">
                                 <img src="images/camera.png" alt="Nikon D5100" />
@@ -2069,22 +1763,6 @@
                             <span class="inventory-name">Controller</span>
                             <span class="inventory-specs">GuliKit KK3 MAX</span>
                         </div>
-                                                
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/shifter.png" alt="Logitech DE9 for G Series" />
-                            </div>
-                            <span class="inventory-name">Driving Force Shifter</span>
-                            <span class="inventory-specs">DE9 for G Series</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/handheld.png" alt="Asus ROG Ally X" />
-                            </div>
-                            <span class="inventory-name">Handheld</span>
-                            <span class="inventory-specs">Asus ROG Ally X</span>
-                        </div>
                         
                         <div class="inventory-item">
                             <div class="inventory-image">
@@ -2093,39 +1771,6 @@
                             <span class="inventory-name">Laptop</span>
                             <span class="inventory-specs">Asus ROG GL502VS-GZ360</span>
                         </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/wheel.png" alt="Logitech G923" />
-                            </div>
-                            <span class="inventory-name">Racing Wheel and Pedals</span>
-                            <span class="inventory-specs">Logitech G923</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/smartphone.png" alt="Samsung Galaxy S23 Ultra" />
-                            </div>
-                            <span class="inventory-name">Smartphone</span>
-                            <span class="inventory-specs">Samsung Galaxy S23 Ultra</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/tablet.png" alt="Samsung Galaxy Tab S9" />
-                            </div>
-                            <span class="inventory-name">Tablet</span>
-                            <span class="inventory-specs">Samsung Galaxy Tab S9</span>
-                        </div>
-                        
-                        <div class="inventory-item">
-                            <div class="inventory-image">
-                                <img src="images/vr.png" alt="Meta Quest 3" />
-                            </div>
-                            <span class="inventory-name">VR Headset</span>
-                            <span class="inventory-specs">Meta Quest 3</span>
-                        </div>
-                        
                     </div>
                 </div>
             </div>
@@ -2160,10 +1805,9 @@
         <i class="fas fa-arrow-up"></i>
     </a>
     
-    <!-- Improved Scripts with Performance Optimizations -->
+    <!-- Simplified Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Document ready function
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize particles.js
             particlesJS("particles-js", {
@@ -2179,34 +1823,15 @@
                         "value": "#ff3366"
                     },
                     "shape": {
-                        "type": "circle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        },
-                        "polygon": {
-                            "nb_sides": 5
-                        }
+                        "type": "circle"
                     },
                     "opacity": {
                         "value": 0.3,
-                        "random": false,
-                        "anim": {
-                            "enable": false,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
+                        "random": false
                     },
                     "size": {
                         "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 40,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
+                        "random": true
                     },
                     "line_linked": {
                         "enable": true,
@@ -2221,13 +1846,7 @@
                         "direction": "none",
                         "random": false,
                         "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": false,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
+                        "out_mode": "out"
                     }
                 },
                 "interactivity": {
@@ -2240,392 +1859,142 @@
                         "onclick": {
                             "enable": true,
                             "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 0.8
-                            }
-                        },
-                        "bubble": {
-                            "distance": 400,
-                            "size": 40,
-                            "duration": 2,
-                            "opacity": 8,
-                            "speed": 3
-                        },
-                        "repulse": {
-                            "distance": 200,
-                            "duration": 0.4
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        },
-                        "remove": {
-                            "particles_nb": 2
                         }
                     }
-                },
-                "retina_detect": true
-            });
-            
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('nav ul');
-            const body = document.querySelector('body');
-            const menuOverlay = document.querySelector('.menu-overlay');
-            
-            // Toggle hamburger menu
-            hamburger.addEventListener('click', function(e) {
-                e.stopPropagation(); // Stop event bubbling
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                
-                // Prevent background scrolling when menu is open
-                if (navMenu.classList.contains('active')) {
-                    body.style.overflow = 'hidden';
-                } else {
-                    body.style.overflow = 'auto';
                 }
             });
-                        
-            // Close menu function - simple and reliable
-            function closeMenu() {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                body.style.overflow = 'auto';
+            
+            // Simplified hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('nav ul');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            // Toggle menu function
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : 'auto';
             }
             
-            // Direct approach for nav links
-            const navLinks = document.querySelectorAll('nav ul li a');
-            navLinks.forEach(function(link) {
+            // Close menu function
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Hamburger click event
+            hamburger.addEventListener('click', toggleMenu);
+            
+            // Menu overlay click event
+            menuOverlay.addEventListener('click', closeMenu);
+            
+            // Navigation links click event
+            document.querySelectorAll('nav ul li a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // 1. Get the target section ID
+                    // Get target section
                     const targetId = this.getAttribute('href');
-                    console.log('Navigation clicked:', targetId);
-                    
-                    // 2. Close the menu first
-                    closeMenu();
-                    
-                    // 3. Use a more reliable way to find the target
                     const targetSection = document.querySelector(targetId);
                     
-                    if (targetSection) {
-                        console.log('Found target section:', targetId);
-                        
-                        // 4. Wait for menu closing animation
-                        setTimeout(function() {
-                            // 5. Calculate position (accounting for header)
-                            const headerOffset = document.querySelector('header').offsetHeight;
-                            const elementPosition = targetSection.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                            
-                            console.log('Scrolling to position:', offsetPosition);
-                            
-                            // 6. Scroll with both methods for better compatibility
-                            window.scrollTo({
-                                top: offsetPosition,
-                                behavior: 'smooth'
-                            });
-                            
-                            // Fallback for older browsers
-                            // targetSection.scrollIntoView({behavior: 'smooth', block: 'start'});
-                        }, 350);
-                    } else {
-                        console.error('Target section not found:', targetId);
-                    }
-                });
-            });
-            
-            // Handle menu overlay click
-            // Replace the current menuOverlay click listener with this version:
-            menuOverlay.addEventListener('click', function(e) {
-                // Don't close if the click was on the hamburger or navigation
-                if (!e.target.closest('.hamburger') && !e.target.closest('nav')) {
+                    // Close menu
                     closeMenu();
-                }
-            });
-            
-            // Intersection Observer for lazy loading elements
-            const lazyLoadImages = () => {
-                if ('IntersectionObserver' in window) {
-                    const imageElements = document.querySelectorAll('img.profile-image');
                     
-                    const imageObserver = new IntersectionObserver((entries, observer) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target;
-                                // Apply a subtle fade-in effect to the profile image
-                                img.style.animation = 'fadeInImg 0.8s ease-in';
-                                observer.unobserve(img);
-                            }
-                        });
-                    });
-                    
-                    imageElements.forEach(img => {
-                        imageObserver.observe(img);
-                    });
-                }
-            };
-            
-            // More efficient animation on scroll using Intersection Observer
-            const animateElementsOnScroll = () => {
-                if ('IntersectionObserver' in window) {
-                    // For timeline items
-                    const timelineObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.timeline-item').forEach(item => {
-                        timelineObserver.observe(item);
-                    });
-                    
-                    // For project cards with staggered delay
-                    const projectObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 100);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.project-card').forEach(card => {
-                        projectObserver.observe(card);
-                    });
-                    
-                    // For skill items with staggered delay
-                    const skillObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 30);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.skill-item').forEach(item => {
-                        skillObserver.observe(item);
-                    });
-                    
-                    // For inventory items with staggered delay
-                    const inventoryObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visible');
-                                }, index * 50);
-                            }
-                        });
-                    }, { threshold: 0.1 });
-                    
-                    document.querySelectorAll('.inventory-item').forEach(item => {
-                        inventoryObserver.observe(item);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Intersection Observer
-                    const scrollHandler = () => {
-                        document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
-                            const itemTop = item.getBoundingClientRect().top;
-                            if (itemTop < window.innerHeight - 100) {
-                                item.classList.add('visible');
-                            }
-                        });
-                    };
-                    
-                    window.addEventListener('scroll', scrollHandler);
-                    scrollHandler(); // Initial check
-                }
-            };
-            
-            // Handle back-to-top button visibility
-            const handleBackToTop = () => {
-                const backToTop = document.querySelector('.back-to-top');
-                const header = document.querySelector('header');
-                
-                const scrollHandler = () => {
-                    if (window.scrollY > 300) {
-                        backToTop.classList.add('visible');
-                        header.classList.add('scrolled');
-                    } else {
-                        backToTop.classList.remove('visible');
-                        header.classList.remove('scrolled');
-                    }
-                };
-                
-                window.addEventListener('scroll', scrollHandler);
-                scrollHandler(); // Initial check
-                
-                // Smooth scroll for back to top
-                backToTop.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            };
-            
-            // Optimize matrix rain effect for better performance
-            const optimizeMatrixRain = () => {
-                const canvas = document.getElementById('matrix-rain');
-                const ctx = canvas.getContext('2d');
-                
-                // Resize canvas
-                const resizeCanvas = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
-                
-                resizeCanvas();
-                
-                // Throttle resize event to improve performance
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(resizeCanvas, 100);
-                });
-                
-                // Reduce matrix rain density on mobile
-                const isMobile = window.innerWidth < 768;
-                const fontSize = isMobile ? 10 : 12;
-                const density = isMobile ? 2 : 1; // Skip columns on mobile
-                
-                const columns = Math.floor(canvas.width / fontSize / density);
-                
-                const drops = [];
-                for (let i = 0; i < columns; i++) {
-                    drops[i] = 1;
-                }
-                
-                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]|;:,.<>?';
-                const charArray = characters.split('');
-                
-                function drawMatrix() {
-                    // Use a more efficient clearing method
-                    ctx.fillStyle = 'rgba(10, 25, 47, 0.05)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#ff3366';
-                    ctx.font = `${fontSize}px monospace`;
-                    
-                    for (let i = 0; i < drops.length; i++) {
-                        // Draw fewer drops on mobile
-                        if (isMobile && i % 2 !== 0) continue;
-                        
-                        const text = charArray[Math.floor(Math.random() * charArray.length)];
-                        ctx.fillText(text, i * fontSize * density, drops[i] * fontSize);
-                        
-                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
-                        }
-                        
-                        drops[i]++;
-                    }
-                }
-                
-                // Use requestAnimationFrame instead of setInterval for better performance
-                let matrixAnimationId;
-                
-                function animateMatrix() {
-                    drawMatrix();
-                    matrixAnimationId = requestAnimationFrame(animateMatrix);
-                }
-                
-                // Start animation
-                matrixAnimationId = requestAnimationFrame(animateMatrix);
-                
-                // Pause animation when tab is not visible to save resources
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        cancelAnimationFrame(matrixAnimationId);
-                    } else {
-                        matrixAnimationId = requestAnimationFrame(animateMatrix);
-                    }
-                });
-            };
-            
-            // Smooth scroll for navigation links
-            const smoothScrollInit = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        
-                        if (targetElement) {
-                            // Account for fixed header
+                    // Scroll to section after a short delay
+                    setTimeout(() => {
+                        if (targetSection) {
                             const headerHeight = document.querySelector('header').offsetHeight;
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                             
                             window.scrollTo({
                                 top: targetPosition,
                                 behavior: 'smooth'
                             });
                         }
-                    });
+                    }, 300);
                 });
-            };
+            });
             
-            // Initialize all functions
-            lazyLoadImages();
-            animateElementsOnScroll();
-            handleBackToTop();
-            optimizeMatrixRain();
-            smoothScrollInit();
-            
-            // Add touch support detection
-            if ('ontouchstart' in window || navigator.maxTouchPoints) {
-                document.body.classList.add('touch-device');
-            }
-            
-            // Reduce animations on low-powered devices
-            const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            if (reducedMotionQuery.matches) {
-                document.body.classList.add('reduced-motion');
+            // Show elements on scroll using Intersection Observer
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
                 
-                // Add minimal styling for reduced motion
-                const styleEl = document.createElement('style');
-                styleEl.textContent = `
-                    .reduced-motion .animate-in,
-                    .reduced-motion .project-card,
-                    .reduced-motion .timeline-item,
-                    .reduced-motion .skill-item,
-                    .reduced-motion .inventory-item {
-                        animation: none !important;
-                        opacity: 1 !important;
-                        transform: none !important;
-                        transition: none !important;
-                    }
-                    
-                    .reduced-motion .typing-effect {
-                        animation: none !important;
-                        border-right: none !important;
-                    }
-                    
-                    .reduced-motion .particles-js-canvas-el {
-                        opacity: 0.3 !important;
-                    }
-                    
-                    .reduced-motion #matrix-rain {
-                        display: none !important;
-                    }
-                `;
-                document.head.appendChild(styleEl);
+                // Observe elements
+                document.querySelectorAll('.timeline-item, .project-card, .skill-item, .inventory-item').forEach(item => {
+                    observer.observe(item);
+                });
             }
+            
+            // Back to top button
+            const backToTop = document.querySelector('.back-to-top');
+            const header = document.querySelector('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                    header.classList.add('scrolled');
+                } else {
+                    backToTop.classList.remove('visible');
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            backToTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Simple matrix rain animation
+            const canvas = document.getElementById('matrix-rain');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const fontSize = 12;
+            const columns = Math.floor(canvas.width / fontSize);
+            
+            const drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+            
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(10, 25, 47, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#ff3366';
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+                
+                requestAnimationFrame(drawMatrix);
+            }
+            
+            drawMatrix();
         });
     </script>
 </body>
